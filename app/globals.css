@@ -2,32 +2,87 @@
 @tailwind components;
 @tailwind utilities;
 
-:root {
-  --foreground-rgb: 0, 0, 0;
-  --background-start-rgb: 214, 219, 220;
-  --background-end-rgb: 255, 255, 255;
-}
-
-@media (prefers-color-scheme: dark) {
-  :root {
-    --foreground-rgb: 255, 255, 255;
-    --background-start-rgb: 0, 0, 0;
-    --background-end-rgb: 0, 0, 0;
-  }
-}
-
-body {
-  color: rgb(var(--foreground-rgb));
-  background: linear-gradient(
-      to bottom,
-      transparent,
-      rgb(var(--background-end-rgb))
-    )
-    rgb(var(--background-start-rgb));
-}
-
 @layer utilities {
   .text-balance {
     text-wrap: balance;
+  }
+  /* Custom brand color utilities */
+  .text-golden {
+    color: #eca829;
+  }
+  .bg-golden {
+    background-color: #eca829;
+  }
+  .border-golden {
+    border-color: #eca829;
+  }
+}
+
+
+
+@layer base {
+  :root {
+    --background: 0 0% 100%;  /* #ffffff */
+    --foreground: 0 0% 0%;    /* #000000 */
+    --card: 0 0% 100%;        /* #ffffff */
+    --card-foreground: 0 0% 0%;  /* #000000 */
+    --popover: 0 0% 100%;     /* #ffffff */
+    --popover-foreground: 0 0% 0%;  /* #000000 */
+    --primary: 42 82% 55%;    /* #eca829 */
+    --primary-foreground: 0 0% 0%;  /* #000000 */
+    --secondary: 0 0% 96.1%;  /* Light gray */
+    --secondary-foreground: 0 0% 0%;  /* #000000 */
+    --muted: 0 0% 96.1%;      /* Light gray */
+    --muted-foreground: 0 0% 45.1%;  /* Medium gray */
+    --accent: 42 82% 55%;     /* #eca829 */
+    --accent-foreground: 0 0% 0%;  /* #000000 */
+    --destructive: 0 84.2% 60.2%;  /* Red */
+    --destructive-foreground: 0 0% 100%;  /* #ffffff */
+    --border: 0 0% 89.8%;     /* Light gray border */
+    --input: 0 0% 89.8%;      /* Light gray input */
+    --ring: 42 82% 55%;       /* #eca829 for focus rings */
+    --chart-1: 42 82% 55%;    /* #eca829 */
+    --chart-2: 0 0% 0%;       /* #000000 */
+    --chart-3: 0 0% 60%;      /* Medium gray */
+    --chart-4: 42 82% 45%;    /* Darker golden */
+    --chart-5: 42 82% 65%;    /* Lighter golden */
+    --radius: 0.5rem;
+  }
+  .dark {
+    --background: 0 0% 0%;      /* #000000 */
+    --foreground: 0 0% 100%;    /* #ffffff */
+    --card: 0 0% 5%;            /* Very dark gray */
+    --card-foreground: 0 0% 100%;  /* #ffffff */
+    --popover: 0 0% 0%;         /* #000000 */
+    --popover-foreground: 0 0% 100%;  /* #ffffff */
+    --primary: 42 82% 55%;      /* #eca829 */
+    --primary-foreground: 0 0% 0%;  /* #000000 */
+    --secondary: 0 0% 14.9%;    /* Dark gray */
+    --secondary-foreground: 0 0% 100%;  /* #ffffff */
+    --muted: 0 0% 14.9%;        /* Dark gray */
+    --muted-foreground: 0 0% 63.9%;  /* Medium gray */
+    --accent: 42 82% 55%;       /* #eca829 */
+    --accent-foreground: 0 0% 0%;  /* #000000 */
+    --destructive: 0 62.8% 30.6%;  /* Red */
+    --destructive-foreground: 0 0% 100%;  /* #ffffff */
+    --border: 0 0% 14.9%;       /* Dark gray border */
+    --input: 0 0% 14.9%;        /* Dark gray input */
+    --ring: 42 82% 55%;         /* #eca829 for focus rings */
+    --chart-1: 42 82% 55%;      /* #eca829 */
+    --chart-2: 0 0% 100%;       /* #ffffff */
+    --chart-3: 0 0% 60%;        /* Medium gray */
+    --chart-4: 42 82% 45%;      /* Darker golden */
+    --chart-5: 42 82% 65%;      /* Lighter golden */
+  }
+}
+
+
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+  body {
+    @apply bg-background text-foreground;
   }
 }
