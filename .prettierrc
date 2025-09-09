@@ -5,5 +5,31 @@
   "trailingComma": "all",
   "arrowParens": "always",
   "printWidth": 80,
-  "tabWidth": 2
+  "tabWidth": 2,
+  "useTabs": false,
+  "endOfLine": "auto",
+  "bracketSpacing": true,
+  "bracketSameLine": false,
+  "proseWrap": "preserve",
+  "htmlWhitespaceSensitivity": "css",
+  "embeddedLanguageFormatting": "auto",
+  "plugins": ["prettier-plugin-tailwindcss"],
+  "tailwindConfig": "./tailwind.config.ts",
+  "tailwindFunctions": ["cn", "clsx"],
+  "importOrder": [
+    "^react$",
+    "^react-dom$",
+    "^next",
+    "^@/types",
+    "^@/lib",
+    "^@/hooks",
+    "^@/components/ui",
+    "^@/components",
+    "^@/app",
+    "^[./]",
+    "^(?!.*[.]css$)[./].*$",
+    ".css$"
+  ],
+  "importOrderSeparation": true,
+  "importOrderSortSpecifiers": true
 }
