@@ -9,19 +9,11 @@
     },
     "project": "./tsconfig.json"
   },
-  "plugins": [
-    "@typescript-eslint",
-    "react",
-    "react-hooks",
-    "jsx-a11y",
-    "import",
-    "prettier"
-  ],
+  "plugins": ["@typescript-eslint", "react", "jsx-a11y", "import", "prettier"],
   "extends": [
     "next/core-web-vitals",
     "plugin:@typescript-eslint/recommended",
     "plugin:react/recommended",
-    "plugin:react-hooks/recommended",
     "plugin:jsx-a11y/recommended",
     "plugin:prettier/recommended"
   ],
