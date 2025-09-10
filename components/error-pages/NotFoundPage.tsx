@@ -159,9 +159,12 @@ export function NotFoundPage() {
                 Khám phá hướng dẫn sử dụng và cách tham gia cộng đồng sinh viên
                 Chic Review
               </CardDescription>
-              <Button variant='link' className='p-0 text-golden' asChild>
-                <Link href='/guide'>Xem hướng dẫn →</Link>
-              </Button>
+              <Link
+                href='/guide'
+                className='text-sm text-golden hover:underline'
+              >
+                Xem hướng dẫn →
+              </Link>
             </CardContent>
           </Card>
 
@@ -173,9 +176,12 @@ export function NotFoundPage() {
               <CardDescription className='mb-4'>
                 Đội ngũ hỗ trợ của chúng tôi luôn sẵn sàng giúp đỡ bạn
               </CardDescription>
-              <Button variant='link' className='p-0 text-golden' asChild>
-                <Link href='/contact'>Liên hệ ngay →</Link>
-              </Button>
+              <Link
+                href='/contact'
+                className='text-sm text-golden hover:underline'
+              >
+                Liên hệ ngay →
+              </Link>
             </CardContent>
           </Card>
 
@@ -187,13 +193,12 @@ export function NotFoundPage() {
               <CardDescription className='mb-4'>
                 Giúp chúng tôi cải thiện bằng cách báo cáo lỗi này
               </CardDescription>
-              <Button variant='link' className='p-0 text-golden' asChild>
-                <Link
-                  href={`/report?url=${typeof window !== 'undefined' ? window.location.href : ''}`}
-                >
-                  Báo cáo lỗi →
-                </Link>
-              </Button>
+              <Link
+                href='/contact'
+                className='text-sm text-golden hover:underline'
+              >
+                Báo cáo lỗi →
+              </Link>
             </CardContent>
           </Card>
         </div>
