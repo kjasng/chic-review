@@ -1,4 +1,13 @@
-import { Facebook, Linkedin, Youtube, Mail, MapPin, Phone } from 'lucide-react'
+import {
+  Facebook,
+  Instagram,
+  Youtube,
+  Mail,
+  MapPin,
+  Phone,
+  MessageCircle,
+} from 'lucide-react'
+import Image from 'next/image'
 import Link from 'next/link'
 
 export function Footer() {
@@ -6,32 +15,43 @@ export function Footer() {
     {
       name: 'Facebook',
       icon: Facebook,
-      href: process.env.NEXT_PUBLIC_FACEBOOK_URL || '#',
+      href:
+        process.env.NEXT_PUBLIC_FACEBOOK_URL ||
+        'https://facebook.com/chicreview',
     },
     {
-      name: 'LinkedIn',
-      icon: Linkedin,
-      href: process.env.NEXT_PUBLIC_LINKEDIN_URL || '#',
+      name: 'Instagram',
+      icon: Instagram,
+      href:
+        process.env.NEXT_PUBLIC_INSTAGRAM_URL ||
+        'https://instagram.com/chicreview',
     },
     {
       name: 'YouTube',
       icon: Youtube,
-      href: process.env.NEXT_PUBLIC_YOUTUBE_URL || '#',
+      href:
+        process.env.NEXT_PUBLIC_YOUTUBE_URL ||
+        'https://youtube.com/@chicreview',
+    },
+    {
+      name: 'Zalo',
+      icon: MessageCircle,
+      href: process.env.NEXT_PUBLIC_ZALO_URL || 'https://zalo.me/chicreview',
     },
   ]
 
   const footerLinks = {
-    'Về chúng tôi': [
-      { name: 'Giới thiệu', href: '/about' },
-      { name: 'Sứ mệnh', href: '/mission' },
-      { name: 'Đội ngũ', href: '/team' },
-      { name: 'Liên hệ', href: '/contact' },
+    'Khám phá': [
+      { name: 'Điểm đến phổ biến', href: '/destinations' },
+      { name: 'Homestay nổi bật', href: '/homestays' },
+      { name: 'Đánh giá mới nhất', href: '/reviews' },
+      { name: 'Blog du lịch', href: '/blog' },
     ],
     'Dịch vụ': [
-      { name: 'Đánh giá trường', href: '/schools' },
-      { name: 'Đánh giá giảng viên', href: '/professors' },
-      { name: 'Chia sẻ tài liệu', href: '/resources' },
-      { name: 'Hỏi đáp', href: '/qa' },
+      { name: 'Viết đánh giá', href: '/reviews/create' },
+      { name: 'Đăng ký homestay', href: '/homestays/register' },
+      { name: 'Quảng cáo', href: '/advertise' },
+      { name: 'Hợp tác', href: '/partnership' },
     ],
     'Hỗ trợ': [
       { name: 'Hướng dẫn sử dụng', href: '/guide' },
@@ -48,19 +68,23 @@ export function Footer() {
           {/* Brand Section */}
           <div className='lg:col-span-2'>
             <div className='mb-4 flex items-center gap-2'>
-              <div className='flex h-10 w-10 items-center justify-center rounded-lg bg-golden font-bold text-white'>
-                CR
-              </div>
+              <Image
+                src='/logo.svg'
+                alt='Chic Review'
+                width={40}
+                height={40}
+                className='h-10 w-10'
+              />
               <div>
                 <h3 className='text-xl font-bold'>Chic Review</h3>
                 <p className='text-sm text-muted-foreground'>
-                  Cộng đồng tri thức sinh viên
+                  Cộng đồng du lịch Việt Nam
                 </p>
               </div>
             </div>
             <p className='mb-4 text-sm text-muted-foreground'>
-              Nền tảng đánh giá và chia sẻ kinh nghiệm học tập hàng đầu dành cho
-              sinh viên Việt Nam.
+              Nền tảng đánh giá du lịch và homestay hàng đầu Việt Nam. Khám phá
+              trải nghiệm thật từ cộng đồng du lịch.
             </p>
 
             {/* Social Links */}
@@ -109,14 +133,12 @@ export function Footer() {
             <div className='flex items-center gap-3'>
               <Mail className='h-5 w-5 text-golden' />
               <span className='text-sm text-muted-foreground'>
-                contact@chicreview.vn
+                hello@chicreview.vn
               </span>
             </div>
             <div className='flex items-center gap-3'>
               <Phone className='h-5 w-5 text-golden' />
-              <span className='text-sm text-muted-foreground'>
-                (+84) 123 456 789
-              </span>
+              <span className='text-sm text-muted-foreground'>1900 1234</span>
             </div>
             <div className='flex items-center gap-3'>
               <MapPin className='h-5 w-5 text-golden' />

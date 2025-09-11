@@ -5,9 +5,9 @@ import { Header } from '@/components/homepage/Header'
 import type { Metadata } from 'next'
 
 export const metadata: Metadata = {
-  title: 'Trang không tồn tại - Chic Review | Cộng đồng sinh viên Việt Nam',
+  title: 'Trang không tồn tại - Chic Review | Cộng đồng du lịch Việt Nam',
   description:
-    'Trang bạn tìm kiếm không tồn tại. Khám phá cộng đồng sinh viên, đánh giá trường học và chia sẻ kinh nghiệm học tập tại Chic Review.',
+    'Trang bạn tìm kiếm không tồn tại. Khám phá điểm đến, homestay và đánh giá du lịch chân thực tại Chic Review.',
   robots: 'noindex, follow',
 }
 

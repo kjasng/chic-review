@@ -50,8 +50,8 @@ export function LoginForm() {
 
       if (result?.error) {
         toast({
-          title: 'Error',
-          description: 'Invalid email or password',
+          title: 'Lỗi',
+          description: 'Email hoặc mật khẩu không đúng',
           variant: 'destructive',
         })
       } else {
@@ -60,8 +60,8 @@ export function LoginForm() {
       }
     } catch {
       toast({
-        title: 'Error',
-        description: 'Something went wrong. Please try again.',
+        title: 'Lỗi',
+        description: 'Có lỗi xảy ra. Vui lòng thử lại.',
         variant: 'destructive',
       })
     } finally {
@@ -77,9 +77,9 @@ export function LoginForm() {
   return (
     <Card className='w-full max-w-md'>
       <CardHeader className='space-y-1'>
-        <CardTitle className='text-2xl font-bold'>Login</CardTitle>
+        <CardTitle className='text-2xl font-bold'>Đăng nhập</CardTitle>
         <CardDescription>
-          Enter your credentials to access your account
+          Nhập thông tin để truy cập tài khoản của bạn
         </CardDescription>
       </CardHeader>
       <form onSubmit={handleSubmit(onSubmit)}>
@@ -89,7 +89,7 @@ export function LoginForm() {
             <Input
               id='email'
               type='email'
-              placeholder='name@example.com'
+              placeholder='ten@example.com'
               {...register('email')}
               disabled={isLoading}
             />
@@ -99,12 +99,12 @@ export function LoginForm() {
           </div>
           <div className='space-y-2'>
             <div className='flex items-center justify-between'>
-              <Label htmlFor='password'>Password</Label>
+              <Label htmlFor='password'>Mật khẩu</Label>
               <Link
                 href='/forgot-password'
                 className='text-sm text-primary hover:underline'
               >
-                Forgot password?
+                Quên mật khẩu?
               </Link>
             </div>
             <Input
@@ -121,7 +121,7 @@ export function LoginForm() {
         <CardFooter className='flex flex-col space-y-4'>
           <Button type='submit' className='w-full' disabled={isLoading}>
             {isLoading && <Loader2 className='mr-2 h-4 w-4 animate-spin' />}
-            Sign In
+            Đăng nhập
           </Button>
 
           <div className='relative w-full'>
@@ -130,7 +130,7 @@ export function LoginForm() {
             </div>
             <div className='relative flex justify-center text-xs uppercase'>
               <span className='bg-background px-2 text-muted-foreground'>
-                Or continue with
+                Hoặc đăng nhập với
               </span>
             </div>
           </div>
@@ -150,17 +150,17 @@ export function LoginForm() {
               onClick={() => handleOAuthSignIn('github')}
               disabled={isLoading}
             >
-              GitHub
+              Facebook
             </Button>
           </div>
 
           <p className='text-center text-sm text-muted-foreground'>
-            Don&apos;t have an account?{' '}
+            Chưa có tài khoản?{' '}
             <Link
               href='/register'
               className='font-medium text-primary hover:underline'
             >
-              Sign up
+              Đăng ký ngay
             </Link>
           </p>
         </CardFooter>

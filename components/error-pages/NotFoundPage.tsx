@@ -48,21 +48,21 @@ export function NotFoundPage() {
     {
       icon: Home,
       title: 'Trang chủ',
-      description: 'Khám phá cộng đồng sinh viên',
+      description: 'Khám phá điểm đến & homestay',
       href: '/',
       color: 'text-golden',
     },
     {
       icon: Users,
-      title: 'Cộng đồng',
-      description: 'Kết nối với sinh viên khác',
-      href: '/community',
+      title: 'Điểm đến',
+      description: 'Khám phá địa điểm du lịch',
+      href: '/destinations',
       color: 'text-blue-500',
     },
     {
       icon: BookOpen,
       title: 'Đánh giá',
-      description: 'Xem đánh giá trường học',
+      description: 'Xem đánh giá du lịch',
       href: '/reviews',
       color: 'text-green-500',
     },
@@ -85,8 +85,8 @@ export function NotFoundPage() {
           <ErrorIllustration />
 
           <h1 className='mb-4 text-4xl font-bold text-foreground md:text-5xl'>
-            Oops! Trang này đang{' '}
-            <span className='text-golden'>&quot;nghỉ học&quot;</span> rồi! 📚
+            Oops! Trang này đã{' '}
+            <span className='text-golden'>&quot;lạc đường&quot;</span> rồi! 🧭
           </h1>
 
           <p className='mx-auto mb-8 max-w-2xl text-lg text-muted-foreground'>
@@ -152,12 +152,12 @@ export function NotFoundPage() {
         <div className='grid grid-cols-1 gap-6 md:grid-cols-3'>
           <Card className='transition-shadow hover:shadow-lg'>
             <CardHeader>
-              <CardTitle className='text-lg'>🎓 Mới tham gia?</CardTitle>
+              <CardTitle className='text-lg'>✈️ Mới khám phá?</CardTitle>
             </CardHeader>
             <CardContent>
               <CardDescription className='mb-4'>
-                Khám phá hướng dẫn sử dụng và cách tham gia cộng đồng sinh viên
-                Chic Review
+                Khám phá hướng dẫn sử dụng và cách tìm kiếm điểm đến, homestay
+                phù hợp
               </CardDescription>
               <Link
                 href='/guide'
@@ -206,11 +206,11 @@ export function NotFoundPage() {
         {/* Motivational Quote */}
         <div className='mt-12 rounded-lg bg-golden/10 p-6 text-center'>
           <p className='text-lg italic text-foreground'>
-            &quot;Lạc đường đôi khi lại giúp ta tìm thấy những điều thú vị
-            hơn!&quot;
+            &quot;Lạc đường đôi khi lại giúp ta khám phá những điểm đến tuyệt
+            vời hơn!&quot;
           </p>
           <p className='mt-2 text-sm text-muted-foreground'>
-            - Cộng đồng sinh viên Chic Review -
+            - Cộng đồng du lịch Chic Review -
           </p>
         </div>
       </div>

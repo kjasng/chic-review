@@ -1,0 +1,13 @@
+<svg width="1920" height="600" viewBox="0 0 1920 600" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <rect width="1920" height="600" fill="url(#gradient)"/>
+  <path d="M0 400C0 400 320 350 640 380C960 410 1280 360 1600 390C1920 420 1920 420 1920 420V600H0V400Z" fill="white" opacity="0.1"/>
+  <path d="M0 450C0 450 320 420 640 440C960 460 1280 430 1600 450C1920 470 1920 470 1920 470V600H0V450Z" fill="white" opacity="0.08"/>
+  <!-- <text x="960" y="250" font-family="Arial, sans-serif" font-size="64" font-weight="bold" text-anchor="middle" fill="white">Khám Phá Việt Nam</text>
+  <text x="960" y="320" font-family="Arial, sans-serif" font-size="24" text-anchor="middle" fill="white" opacity="0.9">Trải nghiệm du lịch tuyệt vời cùng cộng đồng</text> -->
+  <defs>
+    <linearGradient id="gradient" x1="0" y1="0" x2="1920" y2="600">
+      <stop offset="0%" stop-color="#4F46E5"/>
+      <stop offset="100%" stop-color="#7C3AED"/>
+    </linearGradient>
+  </defs>
+</svg>

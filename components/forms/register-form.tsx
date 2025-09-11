@@ -17,6 +17,7 @@ import {
   CardHeader,
   CardTitle,
 } from '@/components/ui/card'
+import { Checkbox } from '@/components/ui/checkbox'
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
 import { toast } from '@/hooks/use-toast'
@@ -26,6 +27,7 @@ import { registerSchema } from '@/lib/validations/auth.schema'
 export function RegisterForm() {
   const router = useRouter()
   const [isLoading, setIsLoading] = useState(false)
+  const [agreedToTerms, setAgreedToTerms] = useState(false)
 
   const {
     register,
@@ -36,6 +38,15 @@ export function RegisterForm() {
   })
 
   const onSubmit = async (data: RegisterInput) => {
+    if (!agreedToTerms) {
+      toast({
+        title: 'Lỗi',
+        description: 'Bạn cần đồng ý với điều khoản sử dụng',
+        variant: 'destructive',
+      })
+      return
+    }
+
     setIsLoading(true)
 
     try {
@@ -50,20 +61,19 @@ export function RegisterForm() {
       const result = await response.json()
 
       if (!response.ok) {
-        throw new Error(result.error || 'Registration failed')
+        throw new Error(result.error || 'Đăng ký thất bại')
       }
 
       toast({
-        title: 'Success',
-        description: 'Account created successfully! Please login.',
+        title: 'Thành công',
+        description: 'Tạo tài khoản thành công! Vui lòng đăng nhập.',
       })
 
       router.push('/login')
     } catch (error) {
       toast({
-        title: 'Error',
-        description:
-          error instanceof Error ? error.message : 'Something went wrong',
+        title: 'Lỗi',
+        description: error instanceof Error ? error.message : 'Có lỗi xảy ra',
         variant: 'destructive',
       })
     } finally {
@@ -74,18 +84,16 @@ export function RegisterForm() {
   return (
     <Card className='w-full max-w-md'>
       <CardHeader className='space-y-1'>
-        <CardTitle className='text-2xl font-bold'>Create an account</CardTitle>
-        <CardDescription>
-          Enter your information to create your account
-        </CardDescription>
+        <CardTitle className='text-2xl font-bold'>Đăng ký tài khoản</CardTitle>
+        <CardDescription>Nhập thông tin để tạo tài khoản mới</CardDescription>
       </CardHeader>
       <form onSubmit={handleSubmit(onSubmit)}>
         <CardContent className='space-y-4'>
           <div className='space-y-2'>
-            <Label htmlFor='name'>Name</Label>
+            <Label htmlFor='name'>Họ và tên</Label>
             <Input
               id='name'
-              placeholder='John Doe'
+              placeholder='Nguyễn Văn A'
               {...register('name')}
               disabled={isLoading}
             />
@@ -98,7 +106,7 @@ export function RegisterForm() {
             <Input
               id='email'
               type='email'
-              placeholder='name@example.com'
+              placeholder='ten@example.com'
               {...register('email')}
               disabled={isLoading}
             />
@@ -107,10 +115,11 @@ export function RegisterForm() {
             )}
           </div>
           <div className='space-y-2'>
-            <Label htmlFor='password'>Password</Label>
+            <Label htmlFor='password'>Mật khẩu</Label>
             <Input
               id='password'
               type='password'
+              placeholder='Ít nhất 8 ký tự'
               {...register('password')}
               disabled={isLoading}
             />
@@ -119,10 +128,11 @@ export function RegisterForm() {
             )}
           </div>
           <div className='space-y-2'>
-            <Label htmlFor='confirmPassword'>Confirm Password</Label>
+            <Label htmlFor='confirmPassword'>Xác nhận mật khẩu</Label>
             <Input
               id='confirmPassword'
               type='password'
+              placeholder='Nhập lại mật khẩu'
               {...register('confirmPassword')}
               disabled={isLoading}
             />
@@ -132,20 +142,70 @@ export function RegisterForm() {
               </p>
             )}
           </div>
+
+          <div className='flex items-start space-x-2'>
+            <Checkbox
+              id='terms'
+              checked={agreedToTerms}
+              onCheckedChange={(checked) =>
+                setAgreedToTerms(checked as boolean)
+              }
+              disabled={isLoading}
+            />
+            <div className='grid gap-1.5 leading-none'>
+              <label
+                htmlFor='terms'
+                className='text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70'
+              >
+                Tôi đồng ý với{' '}
+                <Link href='/terms' className='text-primary hover:underline'>
+                  điều khoản sử dụng
+                </Link>{' '}
+                và{' '}
+                <Link href='/privacy' className='text-primary hover:underline'>
+                  chính sách bảo mật
+                </Link>
+              </label>
+            </div>
+          </div>
         </CardContent>
         <CardFooter className='flex flex-col space-y-4'>
-          <Button type='submit' className='w-full' disabled={isLoading}>
+          <Button
+            type='submit'
+            className='w-full'
+            disabled={isLoading || !agreedToTerms}
+          >
             {isLoading && <Loader2 className='mr-2 h-4 w-4 animate-spin' />}
-            Create Account
+            Đăng ký
           </Button>
 
+          <div className='relative w-full'>
+            <div className='absolute inset-0 flex items-center'>
+              <span className='w-full border-t' />
+            </div>
+            <div className='relative flex justify-center text-xs uppercase'>
+              <span className='bg-background px-2 text-muted-foreground'>
+                Hoặc đăng ký với
+              </span>
+            </div>
+          </div>
+
+          <div className='grid w-full grid-cols-2 gap-4'>
+            <Button type='button' variant='outline' disabled={isLoading}>
+              Google
+            </Button>
+            <Button type='button' variant='outline' disabled={isLoading}>
+              Facebook
+            </Button>
+          </div>
+
           <p className='text-center text-sm text-muted-foreground'>
-            Already have an account?{' '}
+            Đã có tài khoản?{' '}
             <Link
               href='/login'
               className='font-medium text-primary hover:underline'
             >
-              Sign in
+              Đăng nhập
             </Link>
           </p>
         </CardFooter>

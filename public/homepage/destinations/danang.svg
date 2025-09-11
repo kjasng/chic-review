@@ -1,0 +1,7 @@
+<svg width="400" height="300" viewBox="0 0 400 300" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <rect width="400" height="300" fill="#60A5FA"/>
+  <rect y="200" width="400" height="100" fill="#F3E8C0"/>
+  <circle cx="350" cy="50" r="30" fill="#FCD34D"/>
+  <path d="M50 210 Q100 190 150 210 T250 210 Q300 190 350 210" stroke="#1E40AF" stroke-width="3" fill="none"/>
+  <text x="200" y="250" font-family="Arial, sans-serif" font-size="24" font-weight="bold" text-anchor="middle" fill="#7C2D12">Đà Nẵng</text>
+</svg>

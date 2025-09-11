@@ -1,0 +1,9 @@
+<svg width="400" height="300" viewBox="0 0 400 300" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <circle cx="200" cy="150" r="80" fill="#FEE2E2"/>
+  <text x="200" y="160" font-family="Arial, sans-serif" font-size="48" font-weight="bold" text-anchor="middle" fill="#DC2626">404</text>
+  <path d="M160 130 Q180 110 200 130" stroke="#DC2626" stroke-width="3" fill="none"/>
+  <path d="M240 130 Q220 110 200 130" stroke="#DC2626" stroke-width="3" fill="none"/>
+  <circle cx="170" cy="140" r="5" fill="#DC2626"/>
+  <circle cx="230" cy="140" r="5" fill="#DC2626"/>
+  <path d="M170 170 Q200 190 230 170" stroke="#DC2626" stroke-width="3" fill="none"/>
+</svg>

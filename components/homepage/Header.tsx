@@ -2,23 +2,36 @@
 
 import { useState } from 'react'
 
-import { Menu, X } from 'lucide-react'
+import { Menu, X, Search } from 'lucide-react'
+import Image from 'next/image'
 import Link from 'next/link'
+import { useRouter } from 'next/navigation'
 import { useSession } from 'next-auth/react'
 
 import { Button } from '@/components/ui/button'
 
 export function Header() {
   const { data: session } = useSession()
+  const router = useRouter()
   const [isMenuOpen, setIsMenuOpen] = useState(false)
+  const [searchQuery, setSearchQuery] = useState('')
 
   const navigation = [
     { name: 'Trang chủ', href: '/' },
-    { name: 'Cộng đồng', href: '/community' },
+    { name: 'Điểm đến', href: '/destinations' },
+    { name: 'Homestay', href: '/homestays' },
     { name: 'Đánh giá', href: '/reviews' },
     { name: 'Blog', href: '/blog' },
     { name: 'Liên hệ', href: '/contact' },
   ]
+
+  const handleSearch = (e: React.FormEvent) => {
+    e.preventDefault()
+    if (searchQuery.trim()) {
+      router.push(`/search?q=${encodeURIComponent(searchQuery)}`)
+      setSearchQuery('')
+    }
+  }
 
   return (
     <header className='sticky top-0 z-50 w-full border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60'>
@@ -27,22 +40,48 @@ export function Header() {
           {/* Logo and Tagline */}
           <div className='flex items-center gap-3'>
             <Link href='/' className='flex items-center gap-2'>
-              <div className='flex h-8 w-8 items-center justify-center rounded-lg bg-golden font-bold text-white'>
-                CR
-              </div>
+              <Image
+                src='/logo.svg'
+                alt='Chic Review'
+                width={40}
+                height={40}
+                className='h-10 w-10'
+              />
               <div>
                 <h1 className='text-lg font-bold text-foreground'>
                   Chic Review
                 </h1>
                 <p className='hidden text-xs text-muted-foreground sm:block'>
-                  Cộng đồng tri thức sinh viên Việt Nam
+                  Cộng đồng du lịch Việt Nam
                 </p>
               </div>
             </Link>
           </div>
 
+          {/* Search Bar - Desktop */}
+          <form
+            onSubmit={handleSearch}
+            className='hidden max-w-md flex-1 px-8 lg:flex'
+          >
+            <div className='relative w-full'>
+              <input
+                type='text'
+                placeholder='Tìm điểm đến, homestay...'
+                value={searchQuery}
+                onChange={(e) => setSearchQuery(e.target.value)}
+                className='w-full rounded-full border bg-gray-50 px-4 py-2 pr-10 text-sm focus:border-golden focus:outline-none'
+              />
+              <button
+                type='submit'
+                className='absolute right-1 top-1/2 -translate-y-1/2 rounded-full bg-golden p-1.5 text-white hover:bg-golden/90'
+              >
+                <Search className='h-4 w-4' />
+              </button>
+            </div>
+          </form>
+
           {/* Desktop Navigation */}
-          <nav className='hidden items-center gap-6 md:flex'>
+          <nav className='hidden items-center gap-6 lg:flex'>
             {navigation.map((item) => (
               <Link
                 key={item.name}
