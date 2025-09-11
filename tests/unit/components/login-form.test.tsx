@@ -78,7 +78,8 @@ describe('LoginForm', () => {
     const user = userEvent.setup()
     const mockSignIn = signIn as jest.MockedFunction<typeof signIn>
     mockSignIn.mockResolvedValueOnce({
-      error: null,
+      error: '',
+      code: 'credentials_signin',
       ok: true,
       status: 200,
       url: '',
@@ -108,6 +109,7 @@ describe('LoginForm', () => {
     const mockSignIn = signIn as jest.MockedFunction<typeof signIn>
     mockSignIn.mockResolvedValueOnce({
       error: 'Invalid credentials',
+      code: 'credentials_signin',
       ok: false,
       status: 401,
       url: null,
