@@ -1,11 +1,11 @@
-import { hash } from 'bcryptjs'
-import { NextResponse } from 'next/server'
-import { z } from 'zod'
+import { NextResponse } from "next/server"
+import type { NextRequest } from "next/server"
 
-import { prisma } from '@/lib/db/prisma'
-import { registerSchema } from '@/lib/validations/auth.schema'
+import { hash } from "bcryptjs"
+import { z } from "zod"
 
-import type { NextRequest } from 'next/server'
+import { prisma } from "@/lib/db/prisma"
+import { registerSchema } from "@/lib/validations/auth.schema"
 
 export async function POST(req: NextRequest) {
   try {
@@ -19,7 +19,7 @@ export async function POST(req: NextRequest) {
 
     if (existingUser) {
       return NextResponse.json(
-        { error: 'User already exists with this email' },
+        { error: "User already exists with this email" },
         { status: 400 },
       )
     }
@@ -43,7 +43,7 @@ export async function POST(req: NextRequest) {
 
     return NextResponse.json(
       {
-        message: 'User created successfully',
+        message: "User created successfully",
         user,
       },
       { status: 201 },
@@ -51,14 +51,14 @@ export async function POST(req: NextRequest) {
   } catch (error) {
     if (error instanceof z.ZodError) {
       return NextResponse.json(
-        { error: 'Validation Error', details: error.issues },
+        { error: "Validation Error", details: error.issues },
         { status: 400 },
       )
     }
 
-    console.error('Registration error:', error)
+    console.error("Registration error:", error)
     return NextResponse.json(
-      { error: 'Internal Server Error' },
+      { error: "Internal Server Error" },
       { status: 500 },
     )
   }

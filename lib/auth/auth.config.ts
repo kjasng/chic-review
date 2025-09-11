@@ -1,10 +1,11 @@
-import type { NextAuthConfig } from 'next-auth'
-import Google from 'next-auth/providers/google'
-import GitHub from 'next-auth/providers/github'
-import Credentials from 'next-auth/providers/credentials'
-import { compare } from 'bcryptjs'
-import { loginSchema } from '@/lib/validations/auth.schema'
-import { getUserByEmail } from '@/lib/db/queries'
+import { compare } from "bcryptjs"
+import type { NextAuthConfig } from "next-auth"
+import Credentials from "next-auth/providers/credentials"
+import GitHub from "next-auth/providers/github"
+import Google from "next-auth/providers/google"
+
+import { getUserByEmail } from "@/lib/db/queries"
+import { loginSchema } from "@/lib/validations/auth.schema"
 
 export const authConfig: NextAuthConfig = {
   providers: [
@@ -49,17 +50,17 @@ export const authConfig: NextAuthConfig = {
     }),
   ],
   pages: {
-    signIn: '/login',
-    signOut: '/',
-    error: '/auth/error',
-    verifyRequest: '/auth/verify',
+    signIn: "/login",
+    signOut: "/",
+    error: "/auth/error",
+    verifyRequest: "/auth/verify",
   },
   callbacks: {
     authorized({ auth, request: { nextUrl } }) {
       const isLoggedIn = !!auth?.user
-      const isOnDashboard = nextUrl.pathname.startsWith('/dashboard')
-      const isOnProfile = nextUrl.pathname.startsWith('/profile')
-      const isOnSettings = nextUrl.pathname.startsWith('/settings')
+      const isOnDashboard = nextUrl.pathname.startsWith("/dashboard")
+      const isOnProfile = nextUrl.pathname.startsWith("/profile")
+      const isOnSettings = nextUrl.pathname.startsWith("/settings")
       const isProtected = isOnDashboard || isOnProfile || isOnSettings
 
       if (isProtected) {

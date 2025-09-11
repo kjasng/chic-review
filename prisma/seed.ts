@@ -1,5 +1,5 @@
-import { PrismaClient } from '@prisma/client'
-import { hash } from 'bcryptjs'
+import { PrismaClient } from "@prisma/client"
+import { hash } from "bcryptjs"
 
 const prisma = new PrismaClient()
 
@@ -11,14 +11,14 @@ async function main() {
   await prisma.user.deleteMany()
 
   // Create admin user
-  const hashedPassword = await hash('Admin@123', 12)
+  const hashedPassword = await hash("Admin@123", 12)
 
   const adminUser = await prisma.user.create({
     data: {
-      email: 'admin@example.com',
-      name: 'Admin User',
+      email: "admin@example.com",
+      name: "Admin User",
       password: hashedPassword,
-      role: 'ADMIN',
+      role: "ADMIN",
       emailVerified: new Date(),
     },
   })
@@ -26,10 +26,10 @@ async function main() {
   // Create regular user
   const testUser = await prisma.user.create({
     data: {
-      email: 'user@example.com',
-      name: 'Test User',
+      email: "user@example.com",
+      name: "Test User",
       password: hashedPassword,
-      role: 'USER',
+      role: "USER",
       emailVerified: new Date(),
     },
   })
@@ -37,10 +37,10 @@ async function main() {
   // Create moderator user
   const moderatorUser = await prisma.user.create({
     data: {
-      email: 'moderator@example.com',
-      name: 'Moderator User',
+      email: "moderator@example.com",
+      name: "Moderator User",
       password: hashedPassword,
-      role: 'MODERATOR',
+      role: "MODERATOR",
       emailVerified: new Date(),
     },
   })
@@ -49,52 +49,52 @@ async function main() {
   await prisma.post.createMany({
     data: [
       {
-        title: 'Getting Started with Next.js 15',
+        title: "Getting Started with Next.js 15",
         content:
-          'Next.js 15 introduces exciting new features including improved performance, better developer experience, and enhanced React Server Components support.',
+          "Next.js 15 introduces exciting new features including improved performance, better developer experience, and enhanced React Server Components support.",
         published: true,
         authorId: adminUser.id,
       },
       {
-        title: 'Understanding Prisma ORM',
+        title: "Understanding Prisma ORM",
         content:
-          'Prisma is a next-generation ORM that makes database access easy with type-safe queries and migrations.',
+          "Prisma is a next-generation ORM that makes database access easy with type-safe queries and migrations.",
         published: true,
         authorId: adminUser.id,
       },
       {
-        title: 'Authentication with NextAuth.js',
+        title: "Authentication with NextAuth.js",
         content:
-          'NextAuth.js provides a complete authentication solution for Next.js applications with support for multiple providers.',
+          "NextAuth.js provides a complete authentication solution for Next.js applications with support for multiple providers.",
         published: true,
         authorId: testUser.id,
       },
       {
-        title: 'Draft Post - Work in Progress',
-        content: 'This is a draft post that is not yet published.',
+        title: "Draft Post - Work in Progress",
+        content: "This is a draft post that is not yet published.",
         published: false,
         authorId: testUser.id,
       },
       {
-        title: 'TypeScript Best Practices',
+        title: "TypeScript Best Practices",
         content:
-          'Learn about TypeScript best practices for building scalable and maintainable applications.',
+          "Learn about TypeScript best practices for building scalable and maintainable applications.",
         published: true,
         authorId: moderatorUser.id,
       },
     ],
   })
 
-  console.log('Database seeded successfully!')
-  console.log('Created users:')
-  console.log('  - admin@example.com (password: Admin@123)')
-  console.log('  - user@example.com (password: Admin@123)')
-  console.log('  - moderator@example.com (password: Admin@123)')
+  console.log("Database seeded successfully!")
+  console.log("Created users:")
+  console.log("  - admin@example.com (password: Admin@123)")
+  console.log("  - user@example.com (password: Admin@123)")
+  console.log("  - moderator@example.com (password: Admin@123)")
 }
 
 main()
   .catch((e) => {
-    console.error('Error seeding database:', e)
+    console.error("Error seeding database:", e)
     process.exit(1)
   })
   .finally(async () => {

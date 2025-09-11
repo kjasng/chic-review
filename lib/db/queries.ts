@@ -1,4 +1,4 @@
-import { prisma } from './prisma'
+import { prisma } from "./prisma"
 
 export async function getUserByEmail(email: string) {
   try {
@@ -98,8 +98,8 @@ export async function getUsers(
     const where = search
       ? {
           OR: [
-            { email: { contains: search, mode: 'insensitive' as const } },
-            { name: { contains: search, mode: 'insensitive' as const } },
+            { email: { contains: search, mode: "insensitive" as const } },
+            { name: { contains: search, mode: "insensitive" as const } },
           ],
         }
       : {}
@@ -119,7 +119,7 @@ export async function getUsers(
             select: { posts: true },
           },
         },
-        orderBy: { createdAt: 'desc' },
+        orderBy: { createdAt: "desc" },
       }),
       prisma.user.count({ where }),
     ])

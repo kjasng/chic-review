@@ -1,35 +1,35 @@
-import { NextResponse } from 'next/server'
-import { z } from 'zod'
+import { NextResponse } from "next/server"
+import type { NextRequest } from "next/server"
 
-import { auth } from '@/lib/auth/auth'
-import { prisma } from '@/lib/db/prisma'
+import { z } from "zod"
 
-import type { NextRequest } from 'next/server'
+import { auth } from "@/lib/auth/auth"
+import { prisma } from "@/lib/db/prisma"
 
 const createUserSchema = z.object({
   name: z.string().min(2),
   email: z.string().email(),
-  role: z.enum(['USER', 'ADMIN', 'MODERATOR']).optional(),
+  role: z.enum(["USER", "ADMIN", "MODERATOR"]).optional(),
 })
 
 export async function GET(req: NextRequest) {
   try {
     const session = await auth()
     if (!session) {
-      return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
+      return NextResponse.json({ error: "Unauthorized" }, { status: 401 })
     }
 
     const { searchParams } = new URL(req.url)
-    const page = parseInt(searchParams.get('page') || '1')
-    const limit = parseInt(searchParams.get('limit') || '10')
-    const search = searchParams.get('search') || undefined
+    const page = parseInt(searchParams.get("page") || "1")
+    const limit = parseInt(searchParams.get("limit") || "10")
+    const search = searchParams.get("search") || undefined
     const skip = (page - 1) * limit
 
     const where = search
       ? {
           OR: [
-            { email: { contains: search, mode: 'insensitive' as const } },
-            { name: { contains: search, mode: 'insensitive' as const } },
+            { email: { contains: search, mode: "insensitive" as const } },
+            { name: { contains: search, mode: "insensitive" as const } },
           ],
         }
       : {}
@@ -49,7 +49,7 @@ export async function GET(req: NextRequest) {
             select: { posts: true },
           },
         },
-        orderBy: { createdAt: 'desc' },
+        orderBy: { createdAt: "desc" },
       }),
       prisma.user.count({ where }),
     ])
@@ -64,9 +64,9 @@ export async function GET(req: NextRequest) {
       },
     })
   } catch (error) {
-    console.error('Error fetching users:', error)
+    console.error("Error fetching users:", error)
     return NextResponse.json(
-      { error: 'Internal Server Error' },
+      { error: "Internal Server Error" },
       { status: 500 },
     )
   }
@@ -75,8 +75,8 @@ export async function GET(req: NextRequest) {
 export async function POST(req: NextRequest) {
   try {
     const session = await auth()
-    if (!session || session.user.role !== 'ADMIN') {
-      return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
+    if (!session || session.user.role !== "ADMIN") {
+      return NextResponse.json({ error: "Unauthorized" }, { status: 401 })
     }
 
     const body = await req.json()
@@ -89,7 +89,7 @@ export async function POST(req: NextRequest) {
 
     if (existingUser) {
       return NextResponse.json(
-        { error: 'User already exists with this email' },
+        { error: "User already exists with this email" },
         { status: 400 },
       )
     }
@@ -108,13 +108,13 @@ export async function POST(req: NextRequest) {
   } catch (error) {
     if (error instanceof z.ZodError) {
       return NextResponse.json(
-        { error: 'Validation Error', details: error.issues },
+        { error: "Validation Error", details: error.issues },
         { status: 400 },
       )
     }
-    console.error('Error creating user:', error)
+    console.error("Error creating user:", error)
     return NextResponse.json(
-      { error: 'Internal Server Error' },
+      { error: "Internal Server Error" },
       { status: 500 },
     )
   }

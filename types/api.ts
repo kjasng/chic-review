@@ -9,7 +9,7 @@ export interface PaginationParams {
   limit?: number
   search?: string
   sortBy?: string
-  sortOrder?: 'asc' | 'desc'
+  sortOrder?: "asc" | "desc"
 }
 
 export interface PaginatedResponse<T> {

@@ -1,7 +1,7 @@
 {
   "semi": false,
-  "singleQuote": true,
-  "jsxSingleQuote": true,
+  "singleQuote": false,
+  "jsxSingleQuote": false,
   "trailingComma": "all",
   "arrowParens": "always",
   "printWidth": 80,
@@ -13,22 +13,25 @@
   "proseWrap": "preserve",
   "htmlWhitespaceSensitivity": "css",
   "embeddedLanguageFormatting": "auto",
-  "plugins": ["prettier-plugin-tailwindcss"],
+  "plugins": [
+    "@trivago/prettier-plugin-sort-imports",
+    "prettier-plugin-tailwindcss"
+  ],
   "tailwindConfig": "./tailwind.config.ts",
   "tailwindFunctions": ["cn", "clsx"],
   "importOrder": [
     "^react$",
     "^react-dom$",
-    "^next",
+    "^react/",
+    "^next/",
+    "^@?\\w",
     "^@/types",
     "^@/lib",
     "^@/hooks",
     "^@/components/ui",
     "^@/components",
     "^@/app",
-    "^[./]",
-    "^(?!.*[.]css$)[./].*$",
-    ".css$"
+    "^[./]"
   ],
   "importOrderSeparation": true,
   "importOrderSortSpecifiers": true

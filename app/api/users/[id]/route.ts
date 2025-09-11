@@ -1,15 +1,15 @@
-import { NextResponse } from 'next/server'
-import { z } from 'zod'
+import { NextResponse } from "next/server"
+import type { NextRequest } from "next/server"
 
-import { auth } from '@/lib/auth/auth'
-import { prisma } from '@/lib/db/prisma'
+import { z } from "zod"
 
-import type { NextRequest } from 'next/server'
+import { auth } from "@/lib/auth/auth"
+import { prisma } from "@/lib/db/prisma"
 
 const updateUserSchema = z.object({
   name: z.string().min(2).optional(),
   email: z.string().email().optional(),
-  role: z.enum(['USER', 'ADMIN', 'MODERATOR']).optional(),
+  role: z.enum(["USER", "ADMIN", "MODERATOR"]).optional(),
 })
 
 export async function GET(
@@ -19,7 +19,7 @@ export async function GET(
   try {
     const session = await auth()
     if (!session) {
-      return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
+      return NextResponse.json({ error: "Unauthorized" }, { status: 401 })
     }
 
     const { id } = await params
@@ -40,14 +40,14 @@ export async function GET(
     })
 
     if (!user) {
-      return NextResponse.json({ error: 'User not found' }, { status: 404 })
+      return NextResponse.json({ error: "User not found" }, { status: 404 })
     }
 
     return NextResponse.json(user)
   } catch (error) {
-    console.error('Error fetching user:', error)
+    console.error("Error fetching user:", error)
     return NextResponse.json(
-      { error: 'Internal Server Error' },
+      { error: "Internal Server Error" },
       { status: 500 },
     )
   }
@@ -60,13 +60,13 @@ export async function PATCH(
   try {
     const session = await auth()
     if (!session) {
-      return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
+      return NextResponse.json({ error: "Unauthorized" }, { status: 401 })
     }
 
     const { id } = await params
     // Users can only update their own profile unless they're admin
-    if (session.user.id !== id && session.user.role !== 'ADMIN') {
-      return NextResponse.json({ error: 'Forbidden' }, { status: 403 })
+    if (session.user.id !== id && session.user.role !== "ADMIN") {
+      return NextResponse.json({ error: "Forbidden" }, { status: 403 })
     }
 
     const body = await req.json()
@@ -80,14 +80,14 @@ export async function PATCH(
 
       if (existingUser && existingUser.id !== id) {
         return NextResponse.json(
-          { error: 'Email already in use' },
+          { error: "Email already in use" },
           { status: 400 },
         )
       }
     }
 
     // Only admins can change roles
-    if (validatedData.role && session.user.role !== 'ADMIN') {
+    if (validatedData.role && session.user.role !== "ADMIN") {
       delete validatedData.role
     }
 
@@ -107,13 +107,13 @@ export async function PATCH(
   } catch (error) {
     if (error instanceof z.ZodError) {
       return NextResponse.json(
-        { error: 'Validation Error', details: error.issues },
+        { error: "Validation Error", details: error.issues },
         { status: 400 },
       )
     }
-    console.error('Error updating user:', error)
+    console.error("Error updating user:", error)
     return NextResponse.json(
-      { error: 'Internal Server Error' },
+      { error: "Internal Server Error" },
       { status: 500 },
     )
   }
@@ -125,15 +125,15 @@ export async function DELETE(
 ) {
   try {
     const session = await auth()
-    if (!session || session.user.role !== 'ADMIN') {
-      return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
+    if (!session || session.user.role !== "ADMIN") {
+      return NextResponse.json({ error: "Unauthorized" }, { status: 401 })
     }
 
     const { id } = await params
     // Prevent admin from deleting themselves
     if (session.user.id === id) {
       return NextResponse.json(
-        { error: 'Cannot delete your own account' },
+        { error: "Cannot delete your own account" },
         { status: 400 },
       )
     }
@@ -142,11 +142,11 @@ export async function DELETE(
       where: { id },
     })
 
-    return NextResponse.json({ message: 'User deleted successfully' })
+    return NextResponse.json({ message: "User deleted successfully" })
   } catch (error) {
-    console.error('Error deleting user:', error)
+    console.error("Error deleting user:", error)
     return NextResponse.json(
-      { error: 'Internal Server Error' },
+      { error: "Internal Server Error" },
       { status: 500 },
     )
   }

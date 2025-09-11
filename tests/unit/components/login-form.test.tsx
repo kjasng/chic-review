@@ -1,35 +1,35 @@
-import { render, screen, waitFor } from '@testing-library/react'
-import userEvent from '@testing-library/user-event'
-import { signIn } from 'next-auth/react'
+import { render, screen, waitFor } from "@testing-library/react"
+import userEvent from "@testing-library/user-event"
+import { signIn } from "next-auth/react"
 
-import { LoginForm } from '@/components/forms/login-form'
+import { LoginForm } from "@/components/forms/login-form"
 
-jest.mock('next-auth/react', () => ({
+jest.mock("next-auth/react", () => ({
   signIn: jest.fn(),
 }))
 
-jest.mock('@/hooks/use-toast', () => ({
+jest.mock("@/hooks/use-toast", () => ({
   toast: jest.fn(),
 }))
 
-describe('LoginForm', () => {
+describe("LoginForm", () => {
   beforeEach(() => {
     jest.clearAllMocks()
   })
 
-  it('renders login form with email and password fields', () => {
+  it("renders login form with email and password fields", () => {
     render(<LoginForm />)
 
     expect(screen.getByLabelText(/email/i)).toBeInTheDocument()
     expect(screen.getByLabelText(/password/i)).toBeInTheDocument()
-    expect(screen.getByRole('button', { name: /sign in/i })).toBeInTheDocument()
+    expect(screen.getByRole("button", { name: /sign in/i })).toBeInTheDocument()
   })
 
-  it('displays validation errors for invalid input', async () => {
+  it("displays validation errors for invalid input", async () => {
     const user = userEvent.setup()
     render(<LoginForm />)
 
-    const submitButton = screen.getByRole('button', { name: /sign in/i })
+    const submitButton = screen.getByRole("button", { name: /sign in/i })
 
     // Try to submit with empty fields
     await user.click(submitButton)
@@ -40,14 +40,14 @@ describe('LoginForm', () => {
     })
   })
 
-  it('validates email format', async () => {
+  it("validates email format", async () => {
     const user = userEvent.setup()
     render(<LoginForm />)
 
     const emailInput = screen.getByLabelText(/email/i)
-    const submitButton = screen.getByRole('button', { name: /sign in/i })
+    const submitButton = screen.getByRole("button", { name: /sign in/i })
 
-    await user.type(emailInput, 'invalid-email')
+    await user.type(emailInput, "invalid-email")
     await user.click(submitButton)
 
     await waitFor(() => {
@@ -55,16 +55,16 @@ describe('LoginForm', () => {
     })
   })
 
-  it('validates password length', async () => {
+  it("validates password length", async () => {
     const user = userEvent.setup()
     render(<LoginForm />)
 
     const emailInput = screen.getByLabelText(/email/i)
     const passwordInput = screen.getByLabelText(/password/i)
-    const submitButton = screen.getByRole('button', { name: /sign in/i })
+    const submitButton = screen.getByRole("button", { name: /sign in/i })
 
-    await user.type(emailInput, 'test@example.com')
-    await user.type(passwordInput, '123')
+    await user.type(emailInput, "test@example.com")
+    await user.type(passwordInput, "123")
     await user.click(submitButton)
 
     await waitFor(() => {
@@ -74,42 +74,42 @@ describe('LoginForm', () => {
     })
   })
 
-  it('submits form with valid credentials', async () => {
+  it("submits form with valid credentials", async () => {
     const user = userEvent.setup()
     const mockSignIn = signIn as jest.MockedFunction<typeof signIn>
     mockSignIn.mockResolvedValueOnce({
-      error: '',
-      code: 'credentials_signin',
+      error: "",
+      code: "credentials_signin",
       ok: true,
       status: 200,
-      url: '',
+      url: "",
     })
 
     render(<LoginForm />)
 
     const emailInput = screen.getByLabelText(/email/i)
     const passwordInput = screen.getByLabelText(/password/i)
-    const submitButton = screen.getByRole('button', { name: /sign in/i })
+    const submitButton = screen.getByRole("button", { name: /sign in/i })
 
-    await user.type(emailInput, 'test@example.com')
-    await user.type(passwordInput, 'password123')
+    await user.type(emailInput, "test@example.com")
+    await user.type(passwordInput, "password123")
     await user.click(submitButton)
 
     await waitFor(() => {
-      expect(mockSignIn).toHaveBeenCalledWith('credentials', {
-        email: 'test@example.com',
-        password: 'password123',
+      expect(mockSignIn).toHaveBeenCalledWith("credentials", {
+        email: "test@example.com",
+        password: "password123",
         redirect: false,
       })
     })
   })
 
-  it('displays error message on failed login', async () => {
+  it("displays error message on failed login", async () => {
     const user = userEvent.setup()
     const mockSignIn = signIn as jest.MockedFunction<typeof signIn>
     mockSignIn.mockResolvedValueOnce({
-      error: 'Invalid credentials',
-      code: 'credentials_signin',
+      error: "Invalid credentials",
+      code: "credentials_signin",
       ok: false,
       status: 401,
       url: null,
@@ -119,10 +119,10 @@ describe('LoginForm', () => {
 
     const emailInput = screen.getByLabelText(/email/i)
     const passwordInput = screen.getByLabelText(/password/i)
-    const submitButton = screen.getByRole('button', { name: /sign in/i })
+    const submitButton = screen.getByRole("button", { name: /sign in/i })
 
-    await user.type(emailInput, 'test@example.com')
-    await user.type(passwordInput, 'wrongpassword')
+    await user.type(emailInput, "test@example.com")
+    await user.type(passwordInput, "wrongpassword")
     await user.click(submitButton)
 
     await waitFor(() => {
@@ -130,18 +130,18 @@ describe('LoginForm', () => {
     })
   })
 
-  it('renders OAuth buttons', () => {
+  it("renders OAuth buttons", () => {
     render(<LoginForm />)
 
-    expect(screen.getByRole('button', { name: /google/i })).toBeInTheDocument()
-    expect(screen.getByRole('button', { name: /github/i })).toBeInTheDocument()
+    expect(screen.getByRole("button", { name: /google/i })).toBeInTheDocument()
+    expect(screen.getByRole("button", { name: /github/i })).toBeInTheDocument()
   })
 
-  it('renders sign up link', () => {
+  it("renders sign up link", () => {
     render(<LoginForm />)
 
-    const signUpLink = screen.getByRole('link', { name: /sign up/i })
+    const signUpLink = screen.getByRole("link", { name: /sign up/i })
     expect(signUpLink).toBeInTheDocument()
-    expect(signUpLink).toHaveAttribute('href', '/register')
+    expect(signUpLink).toHaveAttribute("href", "/register")
   })
 })

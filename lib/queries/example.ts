@@ -1,10 +1,10 @@
-import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query'
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query"
 
 // Example API functions
 async function fetchUsers() {
-  const response = await fetch('/api/users')
+  const response = await fetch("/api/users")
   if (!response.ok) {
-    throw new Error('Failed to fetch users')
+    throw new Error("Failed to fetch users")
   }
   return response.json()
 }
@@ -12,31 +12,31 @@ async function fetchUsers() {
 async function fetchUser(id: string) {
   const response = await fetch(`/api/users/${id}`)
   if (!response.ok) {
-    throw new Error('Failed to fetch user')
+    throw new Error("Failed to fetch user")
   }
   return response.json()
 }
 
 async function createUser(userData: { name: string; email: string }) {
-  const response = await fetch('/api/users', {
-    method: 'POST',
+  const response = await fetch("/api/users", {
+    method: "POST",
     headers: {
-      'Content-Type': 'application/json',
+      "Content-Type": "application/json",
     },
     body: JSON.stringify(userData),
   })
   if (!response.ok) {
-    throw new Error('Failed to create user')
+    throw new Error("Failed to create user")
   }
   return response.json()
 }
 
 // Query keys factory
 export const userKeys = {
-  all: ['users'] as const,
-  lists: () => [...userKeys.all, 'list'] as const,
+  all: ["users"] as const,
+  lists: () => [...userKeys.all, "list"] as const,
   list: (filters: string) => [...userKeys.lists(), { filters }] as const,
-  details: () => [...userKeys.all, 'detail'] as const,
+  details: () => [...userKeys.all, "detail"] as const,
   detail: (id: string) => [...userKeys.details(), id] as const,
 }
 
@@ -81,14 +81,14 @@ export function useUpdateUser() {
       data: Record<string, unknown>
     }) => {
       const response = await fetch(`/api/users/${id}`, {
-        method: 'PUT',
+        method: "PUT",
         headers: {
-          'Content-Type': 'application/json',
+          "Content-Type": "application/json",
         },
         body: JSON.stringify(data),
       })
       if (!response.ok) {
-        throw new Error('Failed to update user')
+        throw new Error("Failed to update user")
       }
       return response.json()
     },
