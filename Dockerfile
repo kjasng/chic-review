@@ -14,6 +14,12 @@ RUN \
   else echo "Lockfile not found." && exit 1; \
   fi
 
+# Rebuild the source code only when needed
+FROM base AS builder
+WORKDIR /app
+COPY --from=deps /app/node_modules ./node_modules
+COPY prisma ./prisma/
+
 # ========== Stage 2: Builder ==========
 FROM node:20-alpine AS builder
 WORKDIR /app
@@ -24,6 +30,9 @@ COPY . .
 
 # Environment variables for build
 ENV NEXT_TELEMETRY_DISABLED 1
+ARG MONGODB_URI
+ENV MONGODB_URI=$MONGODB_URI
+RUN npx prisma generate
 
 # Build the application
 RUN \
@@ -68,10 +77,7 @@ EXPOSE 3000
 # Set environment variables
 ENV PORT 3000
 ENV HOSTNAME "0.0.0.0"
-
-# Health check
-HEALTHCHECK --interval=30s --timeout=3s --start-period=5s --retries=3 \
-  CMD node -e "require('http').get('http://localhost:3000/api/health', (r) => {r.statusCode === 200 ? process.exit(0) : process.exit(1)})" || exit 1
+ENV NODE_ENV production
 
 # Use dumb-init to handle signals properly
 ENTRYPOINT ["dumb-init", "--"]

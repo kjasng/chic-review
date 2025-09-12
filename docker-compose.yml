@@ -6,76 +6,22 @@ services:
     build:
       context: .
       dockerfile: Dockerfile
-      target: builder
+      target: runner
+      args:
+        MONGODB_URI: ${MONGODB_URI}
     container_name: chic-review-app
-    restart: unless-stopped
+    restart: always
     ports:
       - "3000:3000"
     environment:
-      - NODE_ENV=development
-      - DATABASE_URL=mongodb://root:example@mongodb:27017/chic_review_dev?authSource=admin&replicaSet=rs0&retryWrites=true
-      - NEXTAUTH_URL=http://localhost:3000
-      - NEXTAUTH_SECRET=your-development-secret-key-min-32-chars
+      - NODE_ENV=production
+      - MONGODB_URI=${MONGODB_URI}
+      - NEXTAUTH_URL=https://your-domain.com
+      - NEXTAUTH_SECRET=${NEXTAUTH_SECRET:-generate-a-secure-32-char-secret-for-production}
       - REDIS_URL=redis://redis:6379
-    volumes:
-      - .:/app
-      - /app/node_modules
-      - /app/.next
+    # No volumes in production - everything is baked into the image
     depends_on:
-      - mongodb
       - redis
-    networks:
-      - chic-review-network
-    command: >
-      sh -c "
-        if [ -f yarn.lock ]; then
-          yarn dev
-        elif [ -f package-lock.json ]; then
-          npm run dev
-        elif [ -f pnpm-lock.yaml ]; then
-          pnpm dev
-        else
-          echo 'No lockfile found' && exit 1
-        fi
-      "
-
-  # MongoDB Database
-  mongodb:
-    image: mongo:7.0
-    container_name: chic-review-mongodb
-    restart: unless-stopped
-    ports:
-      - "27017:27017"
-    environment:
-      - MONGO_INITDB_ROOT_USERNAME=root
-      - MONGO_INITDB_ROOT_PASSWORD=example
-      - MONGO_INITDB_DATABASE=chic_review_dev
-    volumes:
-      - mongodb_data:/data/db
-      - mongodb_config:/data/configdb
-    networks:
-      - chic-review-network
-    command: mongod --replSet rs0 --bind_ip_all
-    healthcheck:
-      test: echo 'db.runCommand("ping").ok' | mongosh localhost:27017/test --quiet
-      interval: 10s
-      timeout: 5s
-      retries: 5
-
-  # MongoDB Express (Database Admin UI)
-  mongo-express:
-    image: mongo-express:latest
-    container_name: chic-review-mongo-express
-    restart: unless-stopped
-    ports:
-      - "8081:8081"
-    environment:
-      - ME_CONFIG_MONGODB_ADMINUSERNAME=root
-      - ME_CONFIG_MONGODB_ADMINPASSWORD=example
-      - ME_CONFIG_MONGODB_URL=mongodb://root:example@mongodb:27017/
-      - ME_CONFIG_BASICAUTH=false
-    depends_on:
-      - mongodb
     networks:
       - chic-review-network
 

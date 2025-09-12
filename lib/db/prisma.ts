@@ -7,7 +7,7 @@ if (!process.env.MONGODB_URI) {
 const prismaClientSingleton = () => {
   return new PrismaClient({
     log:
-      process.env.NODE_ENV === "development"
+      process.env.NODE_ENV === "production"
         ? ["query", "error", "warn"]
         : ["error"],
     datasources: {

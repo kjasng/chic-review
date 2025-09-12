@@ -1,5 +1,6 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
+  output: "standalone",
   // Moved from experimental to top level in Next.js 15
   serverExternalPackages: ["@prisma/client", "bcryptjs"],
   images: {
