@@ -13,7 +13,7 @@ services:
       - "3000:3000"
     environment:
       - NODE_ENV=development
-      - MONGODB_URI=postgresql://postgres:postgres@db:5432/chic_review_dev
+      - DATABASE_URL=mongodb://root:example@mongodb:27017/chic_review_dev?authSource=admin&replicaSet=rs0&retryWrites=true
       - NEXTAUTH_URL=http://localhost:3000
       - NEXTAUTH_SECRET=your-development-secret-key-min-32-chars
       - REDIS_URL=redis://redis:6379
@@ -22,7 +22,7 @@ services:
       - /app/node_modules
       - /app/.next
     depends_on:
-      - db
+      - mongodb
       - redis
     networks:
       - chic-review-network
@@ -38,6 +38,46 @@ services:
           echo 'No lockfile found' && exit 1
         fi
       "
+
+  # MongoDB Database
+  mongodb:
+    image: mongo:7.0
+    container_name: chic-review-mongodb
+    restart: unless-stopped
+    ports:
+      - "27017:27017"
+    environment:
+      - MONGO_INITDB_ROOT_USERNAME=root
+      - MONGO_INITDB_ROOT_PASSWORD=example
+      - MONGO_INITDB_DATABASE=chic_review_dev
+    volumes:
+      - mongodb_data:/data/db
+      - mongodb_config:/data/configdb
+    networks:
+      - chic-review-network
+    command: mongod --replSet rs0 --bind_ip_all
+    healthcheck:
+      test: echo 'db.runCommand("ping").ok' | mongosh localhost:27017/test --quiet
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  # MongoDB Express (Database Admin UI)
+  mongo-express:
+    image: mongo-express:latest
+    container_name: chic-review-mongo-express
+    restart: unless-stopped
+    ports:
+      - "8081:8081"
+    environment:
+      - ME_CONFIG_MONGODB_ADMINUSERNAME=root
+      - ME_CONFIG_MONGODB_ADMINPASSWORD=example
+      - ME_CONFIG_MONGODB_URL=mongodb://root:example@mongodb:27017/
+      - ME_CONFIG_BASICAUTH=false
+    depends_on:
+      - mongodb
+    networks:
+      - chic-review-network
 
   # Redis Cache
   redis:
@@ -73,7 +113,9 @@ networks:
     driver: bridge
 
 volumes:
-  postgres_data:
+  mongodb_data:
+    driver: local
+  mongodb_config:
     driver: local
   redis_data:
     driver: local

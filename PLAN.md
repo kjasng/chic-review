@@ -62,9 +62,9 @@
 
 #### Database & Backend
 
-- [x] **Prisma ORM** - Type-safe database client
-- [x] **PostgreSQL Schema** - User, Account, Session, Post models
-- [x] **Database Migrations** - Versioned schema management
+- [x] **Prisma ODM** - Type-safe MongoDB client
+- [x] **MongoDB Schema** - User, Account, Session, Post models
+- [x] **MongoDB Collections** - Document-based data structure
 - [x] **API Routes** - Auth and user management endpoints
 
 #### Development Infrastructure
@@ -235,10 +235,10 @@ chic-review/
 
 ### Phase 2: Database & Authentication ✅ COMPLETED
 
-- [x] Install and configure Prisma ORM
-- [x] Design database schema (User, Account, Session, Post models)
-- [x] Create and apply initial migrations
-- [x] Set up PostgreSQL with Docker
+- [x] Install and configure Prisma ODM
+- [x] Design MongoDB schema (User, Account, Session, Post models)
+- [x] Configure MongoDB collections and indexes
+- [x] Set up MongoDB with Docker
 - [x] Install NextAuth.js v5 with Prisma adapter
 - [x] Configure authentication providers and security
 - [x] Create login/register pages with Vietnamese content
@@ -330,8 +330,8 @@ chic-review/
 
 ### Database & ORM ✅
 
-- **PostgreSQL 16** - Primary database with Docker ✅
-- **Prisma 5.22.0** - Type-safe ORM with migrations ✅
+- **MongoDB 7.0** - Primary NoSQL database with Docker ✅
+- **Prisma 5.22.0** - Type-safe ODM with MongoDB support ✅
 - **Redis 7** - Caching layer configured ✅
 
 ### Authentication ✅
@@ -380,7 +380,7 @@ chic-review/
 
 - **Vercel** - Hosting platform 📋
 - **GitHub Actions** - CI/CD pipeline 📋
-- **Supabase/Neon** - Managed PostgreSQL 📋
+- **MongoDB Atlas** - Managed MongoDB 📋
 - **Upstash** - Managed Redis 📋
 
 ---
@@ -447,20 +447,20 @@ docker-compose build --no-cache
 ### Database Commands
 
 ```bash
-# Create migration
-npx prisma migrate dev --name migration-name
-
-# Apply migrations
-npx prisma migrate deploy
-
-# Generate Prisma client
+# Generate Prisma client for MongoDB
 npx prisma generate
+
+# Push schema to MongoDB
+npx prisma db push
 
 # Seed database
 npx prisma db seed
 
 # Open Prisma Studio
 npx prisma studio
+
+# MongoDB Shell Access
+docker exec -it chic-review-mongodb mongosh -u root -p example
 ```
 
 ---
@@ -530,18 +530,18 @@ npx prisma studio
 ### Docker Strategy ✅
 
 - Multi-service development environment
-- PostgreSQL, Redis, and app containers
+- MongoDB, Redis, and app containers
 - Hot reload for rapid development
 - Database persistence with named volumes
-- Development tools (Adminer, Mailhog) included
+- Development tools (Mongo Express, Mailhog) included
 
 ### Database Design
 
 - User management with roles (USER, ADMIN, MODERATOR)
 - NextAuth.js compatibility with Account/Session models
 - Extensible Post model for future review features
-- Proper indexing for performance
-- Migration-based schema management
+- MongoDB indexes for query optimization
+- Document-based flexible schema structure
 
 ### Security Implementation
 
@@ -578,7 +578,7 @@ npx prisma studio
 
 - **Foundation**: ✅ Complete - Next.js 15, TypeScript, Tailwind CSS
 - **Authentication**: ✅ Complete - NextAuth.js v5 with full user management
-- **Database**: ✅ Complete - Prisma + PostgreSQL with Docker
+- **Database**: ✅ Complete - Prisma + MongoDB with Docker
 - **UI Framework**: ✅ Complete - shadcn/ui with Vietnamese content
 - **Development Environment**: ✅ Complete - Docker Compose with all services
 - **Code Quality**: ✅ Complete - ESLint, Prettier, Husky, Commitlint
@@ -599,6 +599,6 @@ npx prisma studio
 
 ---
 
-_Last Updated: 2025-01-11_
+_Last Updated: 2025-01-12_
 _Project: Chic Review - Vietnamese Student Community Platform_
-_Status: Foundation Complete, Core Features In Development_
+_Status: MongoDB Migration Complete, Core Features In Development_
