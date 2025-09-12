@@ -9,6 +9,9 @@ export const metadata: Metadata = {
   description: "Login to your account",
 }
 
+// Force dynamic rendering to prevent auth-related prerendering errors
+export const dynamic = "force-dynamic"
+
 export default function LoginPage() {
   return (
     <Suspense fallback={<div>Loading...</div>}>

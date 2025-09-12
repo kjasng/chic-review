@@ -50,3 +50,6 @@ export const config = {
     "/((?!api|_next/static|_next/image|favicon.ico|.*\\..*).*)",
   ],
 }
+
+// Use Node.js runtime instead of Edge Runtime to support bcryptjs
+export const runtime = "nodejs"
