@@ -1,604 +1,961 @@
-# Chic Review - Vietnamese Student Community Platform
+# Chic Review - Hanoi Accommodation Review Platform
 
 ## Table of Contents
 
 1. [Project Overview](#project-overview)
-2. [Implementation Status](#implementation-status)
-3. [Next.js 15 Fullstack Architecture](#nextjs-15-fullstack-architecture)
-4. [Implementation Timeline](#implementation-timeline)
-5. [Technology Stack](#technology-stack)
-6. [Development Workflow](#development-workflow)
+2. [Core Features](#core-features)
+3. [Technology Stack](#technology-stack)
+4. [Database Schema](#database-schema)
+5. [Roles and Permissions](#roles-and-permissions)
+6. [Rewards System](#rewards-system)
+7. [Development Plan](#development-plan)
+8. [UI/UX Guidelines](#uiux-guidelines)
+9. [API Architecture](#api-architecture)
+10. [Future Enhancements](#future-enhancements)
 
 ---
 
 ## Project Overview
 
-**Chic Review** is a Vietnamese student community platform that enables students to:
+### Purpose
+**Chic Review** is a trusted accommodation review platform designed specifically for young people in Hanoi. The platform enables users to discover, review, and share experiences about homestays, hostels, and hotels while earning rewards for their contributions.
 
-- **Share reviews and experiences** about universities, professors, and courses
-- **Connect with other students** in their academic journey
-- **Rate universities and professors** to help future students make informed decisions
-- **Share study resources** and collaborate on academic projects
-- **Build a supportive community** for Vietnamese students
+### Target Users
+- **Primary**: Young professionals and students (18-35) seeking accommodation in Hanoi
+- **Secondary**: Travelers looking for verified local recommendations
 
-### Platform Features
+### Key Values
+- **Transparency**: Authentic, verified reviews from real users
+- **Community**: Building a supportive network of reviewers
+- **Rewards**: Incentivizing quality contributions with valuable rewards
+- **Trust**: Ensuring reliable information through moderation
+- **Accessibility**: Mobile-first, Vietnamese-friendly interface
 
-**Current Scope:**
-
-- Student community reviews and ratings
-- University and professor evaluations
-- Study resource sharing
-- Student networking and connections
-- Vietnamese-first user experience
-
-**Target Users:**
-
-- Vietnamese university students
-- Prospective students researching universities
-- Recent graduates sharing experiences
-- International Vietnamese students
+### Unique Value Proposition
+Chic Review aggregates reviews from multiple trusted platforms (Facebook, Google, Agoda, Booking.com) providing comprehensive insights in one place. Active reviewers are rewarded with educational resources, study materials, and exclusive courses - creating a knowledge-sharing ecosystem while solving accommodation discovery problems through data aggregation.
 
 ---
 
-## Implementation Status
+## Core Features
 
-### ✅ Completed Features
+### 1. Authentication & User Management
+- **User Registration/Login** with email verification
+- **Social Authentication** (Google, Facebook)
+- **Profile Management** with avatar, bio, preferences
+- **Password Reset** with secure email flow
+- **Two-factor Authentication** (optional)
 
-#### Frontend Foundation
+### 2. Accommodation Listings (Platform-Owned)
+- **Property Types**: Homestays, Hostels, Hotels, Apartments
+- **Management**: All properties owned and managed by the platform
+- **Detailed Information**:
+  - Location with map integration
+  - Price ranges (daily/monthly)
+  - Amenities (WiFi, AC, Kitchen, etc.)
+  - House rules and policies
+  - Photo galleries
+  - Contact information
+  - Basic property metadata
+- **Admin Controls**:
+  - Add/Edit/Remove listings
+  - Update availability and pricing
+  - Manage property photos
+  - Feature properties on homepage
 
-- [x] **Homepage** - Vietnamese landing page with Hero, Mission, Header, Footer
-- [x] **404 Error Page** - Custom Vietnamese error page with student-friendly messaging
-- [x] **Mobile-Responsive Design** - Works across all device sizes
-- [x] **Golden Brand Color (#eca829)** - Consistently implemented throughout UI
-- [x] **shadcn/ui Components** - Complete UI component library integrated
+### 3. Review System (Dual-Source)
+- **Crawled Reviews** (External Sources):
+  - Facebook Reviews & Ratings
+  - Google Reviews & Maps
+  - Agoda Reviews
+  - Booking.com Reviews
+  - Automated crawling schedules
+  - Review deduplication
+  - Language processing (Vietnamese/English)
+- **User-Generated Reviews** (Platform Native):
+  - Direct reviews from registered users
+  - Multi-criteria ratings (cleanliness, location, value, etc.)
+  - Photo uploads with reviews (max 5 photos)
+  - Minimum 50 words requirement
+  - Helpful votes system
+- **Combined Display Features**:
+  - Aggregated rating from all sources
+  - Platform source indicators (icons showing origin)
+  - Sentiment analysis across all reviews
+  - Timeline view mixing both types
+  - Filter by source type
+  - Total review count from all platforms
 
-#### Authentication System
+### 4. Rewards & Points System
+- **Points Earning**:
+  - Write detailed review: 50 points
+  - Upload photos: 10 points per photo
+  - Review gets helpful votes: 5 points per vote
+  - Monthly active reviewer bonus: 100 points
+  - Verify stay with booking proof: 30 points
+- **Rewards Catalog**:
+  - Study materials (500 points)
+  - Online course vouchers (1000 points)
+  - Premium membership (2000 points)
+  - E-books and resources (300 points)
+- **Points Dashboard** showing balance and history
+- **Leaderboard** for top reviewers
 
-- [x] **NextAuth.js v5** - Modern authentication framework
-- [x] **Login/Register Pages** - Complete auth flow with Vietnamese content
-- [x] **Session Management** - SessionProvider configured
-- [x] **Protected Routes** - Middleware for auth protection
-- [x] **User Management APIs** - CRUD operations for users
+### 5. Search & Discovery
+- **Smart Search** with autocomplete
+- **Filters**:
+  - Price range slider
+  - Location/District
+  - Property type
+  - Amenities checklist
+  - Rating threshold
+  - Availability dates
+- **Sort Options**: Price, Rating, Newest, Most Reviewed
+- **Map View** with cluster markers
+- **Saved Searches** with notifications
 
-#### Database & Backend
+### 6. Homepage Features
+- **Hero Section** with search bar
+- **Featured Accommodations** (curated)
+- **Recent Reviews** carousel
+- **Top Reviewers** showcase
+- **Districts Guide** with area insights
+- **Seasonal Recommendations**
+- **Platform Statistics** (reviews, users, properties)
 
-- [x] **Prisma ODM** - Type-safe MongoDB client
-- [x] **MongoDB Schema** - User, Account, Session, Post models
-- [x] **MongoDB Collections** - Document-based data structure
-- [x] **API Routes** - Auth and user management endpoints
+### 7. User Dashboard
+- **My Reviews** management
+- **Points Balance** and history
+- **Saved Properties** list
+- **Booking History** (future feature)
+- **Notifications** center
+- **Settings** and preferences
+- **Rewards Redemption** interface
 
-#### Development Infrastructure
-
-- [x] **Docker Configuration** - Full development environment
-- [x] **Environment Variables** - Comprehensive .env setup
-- [x] **TanStack Query** - Server state management
-- [x] **TypeScript** - Full type safety
-- [x] **ESLint & Prettier** - Code quality tools
-- [x] **Git Hooks** - Automated code quality checks
-
-### 🚧 In Progress
-
-- [ ] **Dashboard Implementation** - User dashboard for managing reviews
-- [ ] **Review System** - Core review and rating functionality
-
-### 📋 Planned Features
-
-#### Core Platform Features
-
-- [ ] **University Profiles** - Detailed university information pages
-- [ ] **Professor Reviews** - Professor rating and review system
-- [ ] **Course Evaluations** - Student course feedback system
-- [ ] **Study Resources** - File sharing and resource library
-- [ ] **Student Networking** - User profiles and connection system
-- [ ] **Search & Discovery** - Advanced search for universities/professors
-
-#### Community Features
-
-- [ ] **Discussion Forums** - Student discussion boards
-- [ ] **Q&A System** - Academic questions and answers
-- [ ] **Events Calendar** - Student events and activities
-- [ ] **Study Groups** - Group formation and management
-
-#### Advanced Features
-
-- [ ] **Recommendation Engine** - Personalized university/course suggestions
-- [ ] **Analytics Dashboard** - Platform usage and review insights
-- [ ] **Mobile App** - React Native implementation
-- [ ] **Notification System** - Email and push notifications
-
----
-
-## Next.js 15 Fullstack Architecture
-
-### Current Folder Structure (Actual Implementation)
-
-```
-chic-review/
-├── app/                            # Next.js 15 App Router
-│   ├── (auth)/                     # Auth route group
-│   │   ├── login/
-│   │   │   └── page.tsx
-│   │   └── register/
-│   │       └── page.tsx
-│   ├── (dashboard)/                # Protected routes
-│   │   └── dashboard/
-│   │       └── page.tsx
-│   ├── api/                        # API Routes
-│   │   ├── auth/
-│   │   │   ├── [...nextauth]/
-│   │   │   │   └── route.ts
-│   │   │   └── register/
-│   │   │       └── route.ts
-│   │   └── users/
-│   │       ├── [id]/
-│   │       │   └── route.ts
-│   │       └── route.ts
-│   ├── not-found.tsx              # 404 error page
-│   ├── providers.tsx              # Client providers
-│   ├── layout.tsx                 # Root layout
-│   ├── page.tsx                   # Homepage
-│   └── globals.css                # Global styles
-│
-├── components/
-│   ├── ui/                        # shadcn/ui components (30+ components)
-│   ├── forms/                     # Form components
-│   │   ├── login-form.tsx
-│   │   └── register-form.tsx
-│   ├── homepage/                  # Homepage components ✅
-│   │   ├── Header.tsx
-│   │   ├── HeroSection.tsx
-│   │   ├── MissionSection.tsx
-│   │   └── Footer.tsx
-│   └── error-pages/               # Error page components ✅
-│       ├── NotFoundPage.tsx
-│       ├── ErrorIllustration.tsx
-│       └── QuickNavigation.tsx
-│
-├── lib/
-│   ├── utils.ts
-│   ├── auth/                       # Authentication
-│   │   ├── auth.config.ts
-│   │   ├── auth.ts
-│   │   └── session.ts
-│   ├── db/                         # Database
-│   │   ├── prisma.ts
-│   │   └── seed.ts
-│   ├── api/                        # API utilities
-│   │   ├── trpc.ts
-│   │   └── error-handler.ts
-│   ├── validations/                # Zod schemas
-│   │   ├── auth.schema.ts
-│   │   └── user.schema.ts
-│   ├── queries/                    # TanStack Query
-│   │   ├── use-user.ts
-│   │   └── use-auth.ts
-│   └── config/                     # Configuration
-│       ├── site.ts
-│       └── env.ts
-│
-├── server/                         # Backend logic (planned)
-│   ├── routers/                    # tRPC routers (planned)
-│   │   ├── auth.router.ts
-│   │   ├── user.router.ts
-│   │   └── index.ts
-│   └── services/                   # Service layer (planned)
-│       ├── auth.service.ts
-│       └── user.service.ts
-│
-├── hooks/
-│   ├── use-toast.ts
-│   ├── use-auth.ts
-│   ├── use-user.ts
-│   └── use-mounted.ts
-│
-├── prisma/                         # Database
-│   ├── schema.prisma
-│   └── migrations/
-│
-├── types/                          # TypeScript types
-│   ├── next-auth.d.ts
-│   └── api.ts
-│
-├── tests/                          # Test files
-│   ├── unit/
-│   ├── integration/
-│   └── e2e/
-│
-├── public/                         # Static assets
-│   └── (Next.js default files)
-│
-├── .husky/                         # Git hooks ✅
-│   └── pre-commit
-│
-├── docker-compose.yml              # Docker configuration ✅
-├── Dockerfile                      # Container setup ✅
-├── .dockerignore                   # Docker ignore rules ✅
-│
-└── middleware.ts                   # Next.js middleware
-```
-
----
-
-## Implementation Timeline
-
-### Phase 1: Foundation & Setup ✅ COMPLETED
-
-- [x] Initialize Next.js 15 project with App Router
-- [x] Install and configure shadcn/ui components
-- [x] Configure TypeScript with strict mode
-- [x] Set up Tailwind CSS with custom golden theme
-- [x] Configure ESLint & Prettier with pre-commit hooks
-- [x] Set up Husky git hooks with commitlint
-- [x] Create comprehensive Docker configuration
-- [x] Install and configure TanStack Query
-- [x] Set up environment variables and configuration
-
-### Phase 2: Database & Authentication ✅ COMPLETED
-
-- [x] Install and configure Prisma ODM
-- [x] Design MongoDB schema (User, Account, Session, Post models)
-- [x] Configure MongoDB collections and indexes
-- [x] Set up MongoDB with Docker
-- [x] Install NextAuth.js v5 with Prisma adapter
-- [x] Configure authentication providers and security
-- [x] Create login/register pages with Vietnamese content
-- [x] Implement protected routes with middleware
-- [x] Set up session management and SessionProvider
-
-### Phase 3: Core UI & Homepage ✅ COMPLETED
-
-- [x] Create Vietnamese homepage with Hero and Mission sections
-- [x] Build responsive Header and Footer components
-- [x] Implement 404 error page with student-friendly messaging
-- [x] Create reusable form components (login/register)
-- [x] Implement mobile-responsive design
-- [x] Apply golden brand color throughout interface
-- [x] Add loading states and error handling
-
-### Phase 4: API Layer & Backend ✅ COMPLETED
-
-- [x] Create API routes for authentication
-- [x] Implement user management CRUD operations
-- [x] Add validation with Zod schemas
-- [x] Set up error handling and responses
-- [x] Configure TanStack Query for data fetching
-- [x] Add health check endpoints
-
-### Phase 5: Review System (In Progress)
-
-- [ ] Design university and professor data models
-- [ ] Create review submission forms
-- [ ] Implement rating systems (1-5 stars)
-- [ ] Build review display components
-- [ ] Add review moderation system
-- [ ] Create university profile pages
-
-### Phase 6: User Dashboard (Planned)
-
-- [ ] Build user dashboard layout
-- [ ] Create profile management interface
-- [ ] Add user review history
-- [ ] Implement favorites and bookmarks
-- [ ] Add notification preferences
-- [ ] Create activity feed
-
-### Phase 7: Search & Discovery (Planned)
-
-- [ ] Implement university search functionality
-- [ ] Add professor search and filtering
-- [ ] Create advanced search interface
-- [ ] Build recommendation engine
-- [ ] Add search result pagination
-- [ ] Implement search analytics
-
-### Phase 8: Community Features (Planned)
-
-- [ ] Create discussion forum system
-- [ ] Implement Q&A functionality
-- [ ] Add study group features
-- [ ] Build resource sharing system
-- [ ] Create events calendar
-- [ ] Add student networking features
-
-### Phase 9: Testing & Quality (Planned)
-
-- [ ] Set up Jest and Testing Library
-- [ ] Write unit tests for components
-- [ ] Create integration tests for API routes
-- [ ] Configure E2E testing with Playwright
-- [ ] Set up CI/CD pipeline with GitHub Actions
-- [ ] Add performance testing
-
-### Phase 10: Production Deployment (Planned)
-
-- [ ] Configure production environment
-- [ ] Set up database hosting (Supabase/Neon)
-- [ ] Deploy to Vercel/Railway
-- [ ] Configure monitoring and analytics
-- [ ] Set up error tracking (Sentry)
-- [ ] Create deployment documentation
+### 8. Admin Dashboard
+- **Property Management** (Platform-Owned):
+  - Add/Edit/Remove all listings
+  - Update pricing and availability
+  - Manage property photos and details
+  - Feature properties on homepage
+- **User Management**:
+  - View/Edit/Ban users
+  - Adjust points balances
+  - View user activity history
+- **Review Management**:
+  - Moderate user-generated reviews
+  - Monitor crawled review quality
+  - Handle flagged content
+- **Crawl Management**:
+  - Schedule and monitor crawl jobs
+  - View crawling statistics
+  - Handle failed crawls
+- **Analytics**:
+  - User engagement metrics
+  - Review statistics (both sources)
+  - Points distribution
+  - Platform growth charts
+- **Rewards Management**:
+  - Add/Edit rewards catalog
+  - Process redemptions
+  - Track inventory
 
 ---
 
 ## Technology Stack
 
-### Core Framework ✅
+### Frontend
+- **Framework**: Next.js 15.5.2 (App Router)
+- **Language**: TypeScript 5.x
+- **UI Library**: React 19.1.1
+- **Styling**:
+  - TailwindCSS 3.x
+  - shadcn/ui components
+  - Radix UI primitives
+- **State Management**:
+  - TanStack Query 5.x (server state)
+  - Zustand (client state) - if needed
+- **Forms**: React Hook Form + Zod validation
+- **Icons**: Lucide React
+- **Maps**: Mapbox/Google Maps integration
 
-- **Next.js 15.5.2** - React framework with App Router ✅
-- **React 19.1.1** - Latest UI library ✅
-- **TypeScript 5.x** - Full type safety ✅
+### Backend
+- **API Routes**: Next.js API Routes
+- **Authentication**: NextAuth.js v5
+- **Database ORM**: Prisma 5.x
+- **Validation**: Zod schemas
+- **File Upload**: Uploadthing/S3
+- **Email**: Resend/SendGrid
+- **Rate Limiting**: Upstash
+- **Caching**: Redis
 
-### Database & ORM ✅
+### Data Crawling & Aggregation
+- **Web Scraping**: Puppeteer/Playwright
+- **API Integration**: Platform APIs where available
+- **Queue System**: BullMQ/Redis for job processing
+- **Scheduling**: Node-cron for automated crawling
+- **Data Processing**:
+  - Cheerio for HTML parsing
+  - Natural for NLP processing
+  - Translation API for Vietnamese/English
 
-- **MongoDB 7.0** - Primary NoSQL database with Docker ✅
-- **Prisma 5.22.0** - Type-safe ODM with MongoDB support ✅
-- **Redis 7** - Caching layer configured ✅
+### Database
+- **Primary**: MongoDB (current setup)
+- **Caching**: Redis
+- **File Storage**: AWS S3/Cloudinary
+- **Search**: MongoDB Atlas Search
 
-### Authentication ✅
+### DevOps & Infrastructure
+- **Containerization**: Docker + Docker Compose
+- **CI/CD**: GitHub Actions
+- **Hosting**: Vercel/Railway
+- **Monitoring**: Sentry
+- **Analytics**: Vercel Analytics
+- **CDN**: Cloudflare
 
-- **NextAuth.js v5 (beta.25)** - Modern auth solution ✅
-- **Prisma Adapter** - Database session management ✅
-- **bcryptjs** - Secure password hashing ✅
-
-### API & Data Fetching ✅
-
-- **Next.js API Routes** - Built-in API endpoints ✅
-- **TanStack Query 5.59.20** - Server state management ✅
-- **Zod 4.1.5** - Runtime schema validation ✅
-
-### UI & Styling ✅
-
-- **Tailwind CSS** - Utility-first CSS framework ✅
-- **shadcn/ui** - Complete component library ✅
-- **Radix UI** - Accessible headless components ✅
-- **Lucide React** - Modern icon system ✅
-- **Golden Theme (#eca829)** - Custom brand colors ✅
-
-### Development Tools ✅
-
-- **ESLint** - Code linting with Next.js config ✅
-- **Prettier** - Code formatting with Tailwind plugin ✅
-- **Husky** - Git hooks for quality checks ✅
-- **Commitlint** - Conventional commit enforcement ✅
-- **Docker Compose** - Full development environment ✅
-
-### Development Environment ✅
-
-- **Hot Reload** - Fast development experience ✅
-- **PostgreSQL Admin (Adminer)** - Database management UI ✅
-- **Mailhog** - Email testing in development ✅
-- **Redis Cache** - Performance optimization ✅
-
-### Testing (Planned)
-
-- **Jest** - Unit testing framework 📋
-- **Testing Library** - Component testing 📋
-- **Playwright** - E2E testing 📋
-- **MSW** - API mocking 📋
-
-### Deployment (Planned)
-
-- **Vercel** - Hosting platform 📋
-- **GitHub Actions** - CI/CD pipeline 📋
-- **MongoDB Atlas** - Managed MongoDB 📋
-- **Upstash** - Managed Redis 📋
+### Development Tools
+- **Code Quality**: ESLint, Prettier
+- **Git Hooks**: Husky, lint-staged
+- **Testing**: Jest, React Testing Library
+- **API Testing**: Postman/Insomnia
+- **Documentation**: JSDoc, Storybook (optional)
 
 ---
 
-## Development Workflow
+## Database Schema
 
-### Git Workflow
+### Collections (MongoDB)
 
-```bash
-# Feature development
-git checkout -b feature/feature-name
-git add .
-git commit -m "feat: add new feature"
-git push origin feature/feature-name
+```javascript
+// Users Collection
+{
+  _id: ObjectId,
+  email: string,
+  name: string,
+  password: string (hashed),
+  role: "USER" | "ADMIN",
+  avatar: string,
+  bio: string,
+  points: number,
+  totalReviews: number,
+  hasVerifiedStay: boolean,  // Has completed at least one verified stay
+  preferences: {
+    language: string,
+    notifications: boolean,
+    newsletter: boolean
+  },
+  createdAt: Date,
+  updatedAt: Date
+}
 
-# Create pull request for review
-```
+// Accommodations Collection
+{
+  _id: ObjectId,
+  name: string,
+  type: "HOMESTAY" | "HOSTEL" | "HOTEL" | "APARTMENT",
+  slug: string,
+  description: string,
+  address: {
+    street: string,
+    district: string,
+    city: string,
+    coordinates: { lat: number, lng: number }
+  },
+  pricing: {
+    daily: number,
+    monthly: number,
+    currency: string
+  },
+  amenities: string[],
+  images: string[],
+  rules: string[],
+  capacity: number,
+  rooms: number,
+  bathrooms: number,
+  featured: boolean,
+  status: "ACTIVE" | "INACTIVE" | "MAINTENANCE",
+  stats: {
+    rating: number,
+    reviewCount: number,
+    viewCount: number
+  },
+  managedBy: ObjectId,  // Admin who last updated
+  createdAt: Date,
+  updatedAt: Date
+}
 
-### Commit Convention
+// Reviews Collection (Aggregated + User-Generated)
+{
+  _id: ObjectId,
+  accommodationId: ObjectId,
+  source: "FACEBOOK" | "GOOGLE" | "AGODA" | "BOOKING" | "PLATFORM",
+  sourceReviewId: string,  // Original ID from source platform
+  sourceUrl: string,       // Link to original review
+  userId: ObjectId,         // null for crawled reviews
+  reviewerName: string,
+  reviewerAvatar: string,
+  rating: {
+    overall: number,
+    cleanliness: number,     // if available from source
+    location: number,         // if available from source
+    value: number,           // if available from source
+    communication: number,   // if available from source
+    amenities: number       // if available from source
+  },
+  title: string,
+  content: string,
+  language: "VI" | "EN" | "OTHER",
+  translatedContent: string,  // Auto-translated version
+  images: string[],
+  reviewDate: Date,
+  crawledAt: Date,
+  verified: boolean,
+  helpful: number,
+  sentiment: "POSITIVE" | "NEUTRAL" | "NEGATIVE",
+  status: "ACTIVE" | "HIDDEN" | "FLAGGED",
+  metadata: {
+    likes: number,           // From source platform
+    replies: number,         // From source platform
+    responseFromOwner: string
+  },
+  createdAt: Date,
+  updatedAt: Date
+}
 
-- `feat:` New feature
-- `fix:` Bug fix
-- `docs:` Documentation
-- `style:` Formatting changes
-- `refactor:` Code refactoring
-- `test:` Testing
-- `chore:` Maintenance
+// CrawlJobs Collection
+{
+  _id: ObjectId,
+  platform: "FACEBOOK" | "GOOGLE" | "AGODA" | "BOOKING",
+  accommodationId: ObjectId,
+  url: string,
+  status: "PENDING" | "PROCESSING" | "COMPLETED" | "FAILED",
+  lastCrawled: Date,
+  nextScheduled: Date,
+  reviewsFound: number,
+  reviewsNew: number,
+  reviewsUpdated: number,
+  errorLog: string[],
+  createdAt: Date,
+  updatedAt: Date
+}
 
-### Code Quality Checks
+// Points Collection
+{
+  _id: ObjectId,
+  userId: ObjectId,
+  action: string,
+  points: number,
+  description: string,
+  reference: {
+    type: "REVIEW" | "PHOTO" | "VOTE" | "BONUS" | "REDEMPTION",
+    id: ObjectId
+  },
+  balance: number,
+  createdAt: Date
+}
 
-```bash
-# Run linting
-yarn lint
+// Rewards Collection
+{
+  _id: ObjectId,
+  name: string,
+  description: string,
+  category: "COURSE" | "EBOOK" | "MATERIAL" | "MEMBERSHIP",
+  pointsCost: number,
+  image: string,
+  available: boolean,
+  stock: number,
+  deliveryType: "DIGITAL" | "PHYSICAL",
+  redemptions: number,
+  createdAt: Date,
+  updatedAt: Date
+}
 
-# Run formatting
-yarn prettier
-
-# Run type checking
-yarn typecheck
-
-# Run tests
-yarn test
-
-# Run all checks
-yarn validate
-```
-
-### Docker Commands
-
-```bash
-# Start development environment
-docker-compose up -d
-
-# View logs
-docker-compose logs -f app
-
-# Stop services
-docker-compose down
-
-# Rebuild containers
-docker-compose build --no-cache
-```
-
-### Database Commands
-
-```bash
-# Generate Prisma client for MongoDB
-npx prisma generate
-
-# Push schema to MongoDB
-npx prisma db push
-
-# Seed database
-npx prisma db seed
-
-# Open Prisma Studio
-npx prisma studio
-
-# MongoDB Shell Access
-docker exec -it chic-review-mongodb mongosh -u root -p example
+// Redemptions Collection
+{
+  _id: ObjectId,
+  userId: ObjectId,
+  rewardId: ObjectId,
+  pointsSpent: number,
+  status: "PENDING" | "APPROVED" | "DELIVERED" | "CANCELLED",
+  deliveryInfo: object,
+  notes: string,
+  processedBy: ObjectId,
+  createdAt: Date,
+  updatedAt: Date
+}
 ```
 
 ---
 
-## Risk Management
+## Roles and Permissions
 
-### Technical Risks
+### User Roles
 
-| Risk                     | Impact           | Mitigation                                |
-| ------------------------ | ---------------- | ----------------------------------------- |
-| Database overload        | System crash     | Implement caching, query optimization     |
-| Security vulnerabilities | Data breach      | Regular security audits, input validation |
-| Performance issues       | Poor UX          | Load testing, optimization                |
-| Integration failures     | Feature breakage | Comprehensive testing, error boundaries   |
+#### 1. Guest (Unauthenticated)
+- View accommodations
+- Read all reviews (crawled & user-generated)
+- Search and filter properties
+- View rewards catalog
+- View platform statistics
 
-### Operational Risks
+#### 2. User (Authenticated)
+- All Guest permissions
+- Write reviews for properties
+- Upload photos with reviews
+- Earn points for contributions
+- Redeem rewards from catalog
+- Save favorite properties
+- Manage profile settings
+- Vote on review helpfulness
+- View personal points history
+- Track redemption status
 
-| Risk              | Impact             | Mitigation                            |
-| ----------------- | ------------------ | ------------------------------------- |
-| Scope creep       | Timeline delay     | Clear requirements, agile methodology |
-| Technical debt    | Maintenance issues | Code reviews, refactoring sprints     |
-| Team availability | Development delays | Documentation, knowledge sharing      |
+#### 3. Admin
+- All User permissions
+- **Property Management**:
+  - Add/Edit/Remove all properties
+  - Update pricing and availability
+  - Manage property photos
+  - Feature properties on homepage
+- **User Management**:
+  - View/Edit/Ban users
+  - Adjust user points
+  - Reset passwords
+- **Review Management**:
+  - Approve/Reject/Edit reviews
+  - Flag/Hide inappropriate content
+  - Manage crawling schedules
+  - View crawl job status
+- **Rewards Management**:
+  - Add/Edit rewards catalog
+  - Process redemptions
+  - Track inventory
+- **Platform Configuration**:
+  - System settings
+  - Analytics dashboard
+  - Platform statistics
+
+### Permission Matrix
+
+| Feature | Guest | User | Admin |
+|---------|-------|------|-------|
+| View Content | ✅ | ✅ | ✅ |
+| Write Reviews | ❌ | ✅ | ✅ |
+| Earn Points | ❌ | ✅ | ✅ |
+| Redeem Rewards | ❌ | ✅ | ✅ |
+| Manage Properties | ❌ | ❌ | ✅ |
+| Moderate Content | ❌ | ❌ | ✅ |
+| Admin Panel | ❌ | ❌ | ✅ |
+| User Management | ❌ | ❌ | ✅ |
+| Crawl Management | ❌ | ❌ | ✅ |
+
+---
+
+## Rewards System
+
+### Points Economy
+
+#### Earning Mechanisms
+1. **Content Creation**
+   - Detailed review (200+ words): 50 points
+   - Quick review (50-200 words): 25 points
+   - Photo upload: 10 points each (max 50/review)
+   - Video review: 100 points
+
+2. **Quality Indicators**
+   - Verified stay: +30 points
+   - Helpful votes received: 5 points each
+   - Review of the month: 200 bonus points
+   - Complete all rating criteria: +20 points
+
+3. **Engagement**
+   - Daily login streak: 5 points/day
+   - Share review on social: 15 points
+   - Refer new user: 100 points
+   - First review bonus: 100 points
+
+4. **Milestones**
+   - 10 reviews: 200 bonus points
+   - 25 reviews: 500 bonus points
+   - 50 reviews: 1000 bonus points
+   - Top reviewer of month: 500 points
+
+### Rewards Catalog
+
+#### Educational Resources (Primary Focus)
+- **Study Materials** (300-500 points)
+  - PDF guides and templates
+  - Cheat sheets and summaries
+  - Practice exams
+
+- **Online Courses** (1000-2000 points)
+  - Skill development courses
+  - Language learning access
+  - Professional certificates
+
+- **E-books** (200-400 points)
+  - Academic textbooks
+  - Self-help books
+  - Industry guides
+
+#### Platform Benefits
+- **Premium Features** (1500 points/month)
+  - Ad-free browsing
+  - Advanced search filters
+  - Priority support
+
+- **Exclusive Access** (800 points)
+  - Early property listings
+  - Beta features
+  - VIP events
+
+### Anti-Gaming Measures
+- Minimum word count for reviews
+- Photo authenticity verification
+- Rate limiting on actions
+- Quality score threshold
+- Manual review for suspicious activity
+
+---
+
+## Development Plan
+
+### Phase 1: Foundation & Authentication (Week 1-2) ✅ COMPLETED
+
+#### Setup & Configuration ✅
+- [x] Initialize Next.js 15 project with TypeScript
+- [x] Configure MongoDB connection
+- [x] Set up Prisma with MongoDB adapter
+- [x] Configure NextAuth.js v5
+- [x] Set up environment variables
+
+#### Authentication Implementation ✅
+- [x] Create auth schemas in Prisma
+- [x] Implement registration flow
+- [x] Add email/password login
+- [x] Add Google OAuth (configured)
+- [x] Create password reset flow (API ready)
+- [x] Add email verification (structure ready)
+- [x] Set up protected routes
+- [x] Create auth middleware
+
+#### Database Foundation ✅
+- [x] Design user schema with points system
+- [x] Create auth-related collections
+- [x] Set up MongoDB indexes (ready to push)
+- [x] Implement user CRUD operations
+- [x] Add role-based access (USER/ADMIN)
+
+### Phase 2: Data Crawling Infrastructure (Week 3-4)
+
+#### Crawling System Setup
+- [ ] Set up Puppeteer/Playwright for web scraping
+- [ ] Create crawling job queue with BullMQ
+- [ ] Implement Redis for job management
+- [ ] Set up cron jobs for scheduled crawling
+- [ ] Create error handling and retry logic
+
+#### Platform Crawlers
+- [ ] Facebook Reviews crawler
+- [ ] Google Reviews/Maps crawler
+- [ ] Agoda Reviews crawler
+- [ ] Booking.com Reviews crawler
+- [ ] Data normalization pipeline
+- [ ] Deduplication system
+
+### Phase 3: Core Listings & Review Display (Week 5-6)
+
+#### Accommodation System
+- [ ] Create accommodation schema
+- [ ] Import initial property data
+- [ ] Build listing pages
+- [ ] Create property detail views
+- [ ] Implement search functionality
+
+#### Review Aggregation Display
+- [ ] Design aggregated review UI
+- [ ] Create review display components
+- [ ] Build platform source indicators
+- [ ] Implement sentiment visualization
+- [ ] Add review filtering by source
+- [ ] Create review timeline view
+
+### Phase 4: Points & Rewards (Week 7-8)
+
+#### Points System
+- [ ] Create points tracking schema
+- [ ] Implement earning logic
+- [ ] Build points dashboard
+- [ ] Add transaction history
+- [ ] Create leaderboard
+
+#### Rewards Platform
+- [ ] Design rewards schema
+- [ ] Build rewards catalog
+- [ ] Implement redemption flow
+- [ ] Add inventory management
+- [ ] Create delivery system
+
+### Phase 5: Search & Discovery (Week 9)
+
+#### Search Implementation
+- [ ] Set up MongoDB text search
+- [ ] Build search interface
+- [ ] Add autocomplete
+- [ ] Implement filters
+- [ ] Create sort options
+- [ ] Add pagination
+
+#### Advanced Features
+- [ ] Map integration
+- [ ] Location-based search
+- [ ] Saved searches
+- [ ] Search analytics
+
+### Phase 6: User Experience (Week 10)
+
+#### User Dashboard
+- [ ] Create dashboard layout
+- [ ] Build profile management
+- [ ] Add notification system
+- [ ] Implement saved properties
+- [ ] Create review management
+
+#### Homepage & Navigation
+- [ ] Design homepage sections
+- [ ] Add featured content
+- [ ] Create navigation menu
+- [ ] Build footer
+- [ ] Add breadcrumbs
+
+### Phase 7: Admin & Moderation (Week 11)
+
+#### Admin Dashboard
+- [ ] Create admin layout
+- [ ] Build user management
+- [ ] Add content moderation
+- [ ] Implement analytics
+- [ ] Create reports
+
+#### Moderation Tools
+- [ ] Review approval queue
+- [ ] Content flagging system
+- [ ] User verification
+- [ ] Automated moderation rules
+
+### Phase 8: Optimization & Polish (Week 12)
+
+#### Performance
+- [ ] Implement caching strategy
+- [ ] Add lazy loading
+- [ ] Optimize images
+- [ ] Bundle optimization
+- [ ] Database query optimization
+
+#### User Experience
+- [ ] Add loading states
+- [ ] Implement error boundaries
+- [ ] Create 404/500 pages
+- [ ] Add tooltips and help
+- [ ] Improve accessibility
+
+### Phase 9: Testing & Deployment (Week 13-14)
+
+#### Testing
+- [ ] Unit tests for utilities
+- [ ] Integration tests for API
+- [ ] Component testing
+- [ ] E2E testing setup
+- [ ] Performance testing
+
+#### Deployment
+- [ ] Docker configuration
+- [ ] CI/CD pipeline
+- [ ] Production environment
+- [ ] Monitoring setup
+- [ ] Backup strategy
+
+---
+
+## UI/UX Guidelines
+
+### Design Principles
+1. **Mobile-First**: Optimize for mobile devices primarily
+2. **Vietnamese-Friendly**: Support Vietnamese language and cultural context
+3. **Clean & Modern**: Minimalist design with clear hierarchy
+4. **Accessible**: WCAG 2.1 AA compliance
+5. **Fast**: Instant feedback and quick load times
+
+### Visual Design
+- **Color Palette**:
+  - Primary: #ECA829 (Golden)
+  - Secondary: #1F2937 (Dark Gray)
+  - Accent: #10B981 (Green for success)
+  - Background: #FFFFFF / #F9FAFB
+  - Text: #111827 / #6B7280
+
+- **Typography**:
+  - Headings: Inter/Plus Jakarta Sans
+  - Body: System fonts
+  - Vietnamese support required
+
+- **Components**:
+  - Card-based layouts
+  - Consistent spacing (8px grid)
+  - Subtle shadows and borders
+  - Smooth transitions
+
+### User Experience
+- **Onboarding**: Simple 3-step process
+- **Search**: Prominent and always accessible
+- **Reviews**: Easy to read and write
+- **Points**: Clear visibility of balance
+- **Mobile**: Bottom navigation for key actions
+
+### Localization
+- Vietnamese as primary language
+- Date/time in local format
+- Currency in VND
+- Local phone number format
+- District-based navigation
+
+---
+
+## API Architecture
+
+### RESTful Endpoints
+
+#### Authentication
+```
+POST   /api/auth/register
+POST   /api/auth/login
+POST   /api/auth/logout
+POST   /api/auth/forgot-password
+POST   /api/auth/reset-password
+GET    /api/auth/verify-email
+```
+
+#### Users
+```
+GET    /api/users/profile
+PUT    /api/users/profile
+GET    /api/users/:id
+DELETE /api/users/:id (admin)
+GET    /api/users/:id/reviews
+GET    /api/users/:id/points
+```
+
+#### Accommodations
+```
+GET    /api/accommodations
+POST   /api/accommodations
+GET    /api/accommodations/:id
+PUT    /api/accommodations/:id
+DELETE /api/accommodations/:id
+GET    /api/accommodations/search
+```
+
+#### Reviews
+```
+GET    /api/reviews                    # Get aggregated reviews
+GET    /api/reviews/crawled            # Get only crawled reviews
+GET    /api/reviews/platform           # Get only platform reviews
+POST   /api/reviews                    # Create new platform review
+GET    /api/reviews/:id
+PUT    /api/reviews/:id
+DELETE /api/reviews/:id
+POST   /api/reviews/:id/helpful
+POST   /api/reviews/:id/report
+```
+
+#### Crawling Management
+```
+POST   /api/crawl/job                  # Create new crawl job
+GET    /api/crawl/jobs                 # List all crawl jobs
+GET    /api/crawl/jobs/:id            # Get job status
+POST   /api/crawl/execute/:platform   # Trigger manual crawl
+GET    /api/crawl/stats               # Crawling statistics
+```
+
+#### Points & Rewards
+```
+GET    /api/points/balance
+GET    /api/points/history
+POST   /api/points/earn
+GET    /api/rewards
+GET    /api/rewards/:id
+POST   /api/rewards/redeem
+GET    /api/redemptions
+```
+
+### Response Format
+```json
+{
+  "success": true,
+  "data": {},
+  "message": "Success message",
+  "pagination": {
+    "page": 1,
+    "limit": 10,
+    "total": 100
+  }
+}
+```
+
+### Error Handling
+```json
+{
+  "success": false,
+  "error": {
+    "code": "ERROR_CODE",
+    "message": "Error description",
+    "field": "field_name"
+  }
+}
+```
+
+---
+
+## Future Enhancements
+
+### Short Term (3-6 months)
+1. **Mobile App**: React Native implementation
+2. **Advanced Search**: AI-powered recommendations
+3. **Social Features**:
+   - Follow other reviewers
+   - Share lists
+   - Comment on reviews
+4. **Booking Integration**: Direct booking capability
+5. **Verified Stays**: Integration with booking platforms
+6. **Multi-language**: English support
+
+### Medium Term (6-12 months)
+1. **Expansion**: Other cities in Vietnam
+2. **Partner Program**: Property owner tools
+3. **API Platform**: Public API for partners
+4. **Advanced Analytics**: Business intelligence
+5. **Chatbot Support**: AI customer service
+6. **Video Reviews**: Video upload capability
+
+### Long Term (12+ months)
+1. **Blockchain Rewards**: Tokenized points system
+2. **AR Features**: Virtual property tours
+3. **AI Moderation**: Automated content review
+4. **Marketplace**: Student services marketplace
+5. **Community Events**: Meetups and networking
+6. **Education Platform**: Full LMS integration
 
 ---
 
 ## Success Metrics
 
-### Performance
+### Key Performance Indicators (KPIs)
 
-- Core Web Vitals score > 90
-- API response time < 200ms
-- Time to First Byte < 600ms
-- Bundle size < 200KB initial JS
+#### User Metrics
+- Monthly Active Users (MAU): 10,000+
+- User Retention (30-day): >40%
+- Average Reviews per User: 3+
+- User Satisfaction (NPS): >50
 
-### Quality
+#### Content Metrics
+- Total Properties Listed: 1,000+
+- Reviews per Property: 5+ average
+- Review Quality Score: >80%
+- Photo Upload Rate: 60%
 
-- Test coverage > 80%
-- Zero critical security vulnerabilities
-- TypeScript coverage 100%
-- Accessibility score > 95
+#### Engagement Metrics
+- Daily Active Users (DAU): 2,000+
+- Average Session Duration: >5 minutes
+- Points Redemption Rate: 30%
+- Social Share Rate: 20%
 
-### User Experience
+#### Business Metrics
+- Cost per Acquisition: <$5
+- Lifetime Value (LTV): >$50
+- Redemption Cost: <$2/user
+- Platform Growth: 20% MoM
 
-- Page load time < 2 seconds
-- 99.9% uptime
-- Mobile responsiveness 100%
-- User satisfaction score > 4.5/5
+### Technical Metrics
+- Page Load Time: <2 seconds
+- API Response Time: <200ms
+- Uptime: 99.9%
+- Error Rate: <0.1%
+
+---
+
+## Risk Mitigation
+
+### Technical Risks
+| Risk | Impact | Mitigation |
+|------|--------|------------|
+| Database scaling | Performance degradation | MongoDB sharding, caching layer |
+| Review fraud | Trust erosion | Verification system, ML detection |
+| Point gaming | Economic imbalance | Rate limiting, manual review |
+| Data breach | User trust loss | Security audits, encryption |
+
+### Business Risks
+| Risk | Impact | Mitigation |
+|------|--------|------------|
+| Low user adoption | Platform failure | Marketing, referral program |
+| Content quality | User dissatisfaction | Moderation, incentives |
+| Reward costs | Unsustainable economics | Dynamic pricing, partnerships |
+| Competition | Market share loss | Unique features, community focus |
 
 ---
 
 ## Notes & Decisions
 
-### Vietnamese Content Strategy
+### Technical Decisions
+- **MongoDB over PostgreSQL**: Better for flexible schema and geographic queries
+- **NextAuth.js v5**: Latest version with improved TypeScript support
+- **Prisma ORM**: Type safety and excellent MongoDB support
+- **TanStack Query**: Superior caching and synchronization
 
-- All user-facing content written in Vietnamese
-- Student-friendly language and terminology
-- Cultural context appropriate for Vietnamese students
-- Support for Vietnamese educational system terminology
+### Business Decisions
+- **Points over Cash**: Educational rewards align with target audience
+- **Manual Moderation**: Quality over quantity initially
+- **Hanoi Focus**: Prove model before expansion
+- **Mobile-First**: Young users primarily on mobile
 
-### State Management
-
-- TanStack Query for server state management and caching
-- React hooks for local UI state
-- No global state library needed for current scope
-- Optimistic updates for better user experience
-
-### Docker Strategy ✅
-
-- Multi-service development environment
-- MongoDB, Redis, and app containers
-- Hot reload for rapid development
-- Database persistence with named volumes
-- Development tools (Mongo Express, Mailhog) included
-
-### Database Design
-
-- User management with roles (USER, ADMIN, MODERATOR)
-- NextAuth.js compatibility with Account/Session models
-- Extensible Post model for future review features
-- MongoDB indexes for query optimization
-- Document-based flexible schema structure
-
-### Security Implementation
-
-- Secure authentication with NextAuth.js v5
-- Password hashing with bcryptjs
-- Protected API routes with middleware
-- Environment variable security
-- CORS and rate limiting ready for production
+### Development Priorities
+1. **Authentication**: Foundation for all features
+2. **Basic Reviews**: Core value proposition
+3. **Points System**: Differentiation factor
+4. **Search**: User discovery mechanism
+5. **Admin Tools**: Operational necessity
 
 ---
 
-## Resources & Documentation
+## Project Status
 
-### Official Documentation
+### Current State
+- ✅ Project initialized with Next.js 15
+- ✅ MongoDB configured with Prisma
+- ✅ Authentication system complete (NextAuth.js v5)
+- ✅ User management with roles (USER/ADMIN)
+- ✅ Protected routes and middleware
+- ✅ Basic UI components ready
+- ✅ Rewards UI components created
+- ✅ Search & filter components built
+- ✅ Admin dashboard skeleton ready
+- 🚧 Platform-native review system (Phase 2)
+- 📋 Points calculation logic
+- 📋 Data crawling system (moved to post-MVP)
 
-- [Next.js 15 Documentation](https://nextjs.org/docs)
-- [Prisma Documentation](https://www.prisma.io/docs)
-- [NextAuth.js Documentation](https://authjs.dev)
-- [tRPC Documentation](https://trpc.io/docs)
-- [TanStack Query Documentation](https://tanstack.com/query)
+### Next Steps - Phase 2 Priority
+1. Create review submission form
+2. Build review API endpoints
+3. Implement points calculation logic
+4. Add review display components
+5. Create review moderation system
+6. Test review workflow end-to-end
+7. Add photo upload for reviews
 
-### Internal Documentation
-
-- API Documentation: `/docs/api.md`
-- Component Library: `/docs/components.md`
-- Deployment Guide: `/docs/deployment.md`
-- Contributing Guide: `/CONTRIBUTING.md`
-
----
-
-## Current Status Summary
-
-**Project Health: 🟢 HEALTHY**
-
-- **Foundation**: ✅ Complete - Next.js 15, TypeScript, Tailwind CSS
-- **Authentication**: ✅ Complete - NextAuth.js v5 with full user management
-- **Database**: ✅ Complete - Prisma + MongoDB with Docker
-- **UI Framework**: ✅ Complete - shadcn/ui with Vietnamese content
-- **Development Environment**: ✅ Complete - Docker Compose with all services
-- **Code Quality**: ✅ Complete - ESLint, Prettier, Husky, Commitlint
-
-**Next Priorities:**
-
-1. Implement core review system (universities, professors)
-2. Build user dashboard for managing reviews
-3. Add search and discovery features
-4. Implement community features (forums, Q&A)
-
-**Technical Debt: 🟢 LOW**
-
-- Well-structured codebase with proper TypeScript types
-- Consistent code formatting and linting
-- Proper separation of concerns
-- Comprehensive environment configuration
+### Blockers
+- None currently
 
 ---
 
-_Last Updated: 2025-01-12_
-_Project: Chic Review - Vietnamese Student Community Platform_
-_Status: MongoDB Migration Complete, Core Features In Development_
+_Last Updated: 2025-01-16_
+_Project: Chic Review - Hanoi Accommodation Review Platform_
+_Version: 3.0_
+_Status: Authentication Implementation + Data Crawling Architecture Planning_

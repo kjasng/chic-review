@@ -11,14 +11,39 @@ yarn dev          # Start development server with Turbo (http://localhost:3000)
 yarn build        # Build for production
 yarn start        # Start production server (requires build first)
 yarn lint         # Run ESLint checks
+yarn lint:fix     # Auto-fix ESLint issues
 yarn prettier     # Format all files with Prettier
+yarn prettier:check  # Check formatting without modifying
+yarn typecheck    # TypeScript type checking
+yarn validate     # Run all checks (typecheck + lint + prettier + test)
 ```
 
-### Code Quality Checks
+### Testing
 
 ```bash
-npx eslint . --fix        # Auto-fix ESLint issues
-npx prettier --check .    # Check formatting without modifying files
+yarn test         # Run tests with Jest
+yarn test:watch   # Run tests in watch mode
+yarn test:coverage  # Generate coverage report
+```
+
+### Database Management (Prisma + MongoDB)
+
+```bash
+yarn db:generate  # Generate Prisma client
+yarn db:migrate   # Run migrations (development)
+yarn db:migrate:prod  # Run migrations (production)
+yarn db:push      # Push schema changes directly
+yarn db:seed      # Seed database with initial data
+yarn db:studio    # Open Prisma Studio GUI
+```
+
+### Docker Operations
+
+```bash
+yarn docker:up    # Start containers in detached mode
+yarn docker:down  # Stop all containers
+yarn docker:build # Build Docker images
+yarn docker:logs  # Follow container logs
 ```
 
 ### Package Management
@@ -41,14 +66,37 @@ npx shadcn@latest add <component>  # Add new UI components
 - **Routing**: File-based routing in `/app` directory
 - **Components**: Server Components by default, use `"use client"` directive when needed
 - **Layouts**: Nested layouts via `layout.tsx` files
+- **API Routes**: Located in `/app/api/` directory
 
 ### Key Directories
 
 ```
-app/            # Next.js App Router pages and layouts
-components/ui/  # shadcn/ui components (managed by shadcn CLI)
-lib/           # Utilities including utils.ts with cn() helper
-hooks/         # Custom React hooks including use-toast
+app/
+├── (auth)/          # Auth group routes (login, register)
+├── (dashboard)/     # Protected dashboard routes
+├── api/            # API endpoints
+├── providers.tsx   # React Query provider setup
+└── layout.tsx      # Root layout
+
+components/
+├── ui/             # shadcn/ui components (managed by shadcn CLI)
+├── forms/          # Form components (login, register)
+├── cards/          # Card components
+├── homepage/       # Homepage sections
+├── search/         # Search components
+└── error-pages/    # Error page components
+
+lib/
+├── auth/           # NextAuth.js configuration
+├── config/         # Environment and site configuration
+├── db/             # Prisma client and queries
+├── queries/        # Database query functions
+├── validations/    # Zod schemas
+└── utils.ts        # Utility functions including cn()
+
+prisma/
+├── schema.prisma   # MongoDB schema definition
+└── seed.ts         # Database seeding script
 ```
 
 ### TypeScript Path Aliases
@@ -57,65 +105,88 @@ hooks/         # Custom React hooks including use-toast
 - `@/components/*` - Components directory
 - `@/lib/*` - Library/utilities
 - `@/hooks/*` - Custom hooks
+- `@/types/*` - Type definitions
+- `@/app/*` - App directory
 
-### State Management
+### Database Architecture
 
-- **Jotai**: Atomic state management (v2.14.0)
-- Create atoms in `lib/atoms/` or `hooks/`
-- Usage: `useAtom`, `useAtomValue`, `useSetAtom`
+- **Database**: MongoDB (migrated from PostgreSQL)
+- **ORM**: Prisma with MongoDB adapter
+- **Models**: User, Account, Session, Post, VerificationToken
+- **Authentication**: NextAuth.js v5 (beta) with Prisma adapter
+
+### Authentication System
+
+- **NextAuth.js v5 Beta** with multiple providers:
+  - Credentials (email/password with bcrypt)
+  - Google OAuth
+  - GitHub OAuth
+- **Session Strategy**: JWT with role-based access
+- **Middleware**: Protected routes configured in `middleware.ts`
+
+### State Management & Data Fetching
+
+- **React Query** (TanStack Query v5) for server state
+- **React Hook Form** (v7.62.0) with **Zod** (v4.1.5) validation
+- Custom hooks in `/hooks` directory
 
 ### Styling System
 
 - **Tailwind CSS** with custom configuration
 - **shadcn/ui** components using Radix UI primitives
-- **Design tokens** via CSS variables (light/dark mode support)
-- **Brand colors**:
-  - Primary/Golden: `#eca829`
-  - Use: `bg-golden`, `text-golden`, `border-golden`
+- **CSS Variables** for design tokens (light/dark mode support)
 - **Utility function**: `cn()` for conditional classes (combines clsx + tailwind-merge)
 
 ### Form Handling
 
-- **react-hook-form** (v7.62.0) with **zod** (v4.1.5) validation
+- **react-hook-form** with **zod** validation
 - Use shadcn/ui Form components with integrated validation
+- Validation schemas in `/lib/validations/`
 
 ## Code Standards
 
 ### Prettier Configuration
 
 - No semicolons
-- Single quotes for JS/TS and JSX
+- Double quotes for all strings
 - Trailing commas
 - 80 character line width
 - 2 spaces indentation
+- Import sorting with @trivago/prettier-plugin-sort-imports
 
 ### ESLint
 
 - Extends `next/core-web-vitals`
-- Enforces React hooks rules and accessibility
+- TypeScript recommended rules
+- React and JSX accessibility rules
+- Enforces type imports
+- Unused vars with underscore prefix ignored
 
 ### Git Workflow
 
 - **Husky** git hooks for pre-commit checks
 - **Commitlint** enforces conventional commits
-- Commit types: `feat`, `fix`, `docs`, `style`, `refactor`, `test`, `chore`, etc.
+- **lint-staged** runs on staged files
+- Commit format: `type(scope): message`
+  - Types: `feat`, `fix`, `docs`, `style`, `refactor`, `test`, `chore`
 
-## Environment Requirements
+## Environment Configuration
 
-- **Node.js**: >=18.x
-- **Package Manager**: Yarn (required)
+- **Node.js**: >=18.x required
+- **Package Manager**: Yarn (enforced)
 - **TypeScript**: 5.x
+- **Build Output**: Standalone mode for containerization
 
 ## Installed shadcn/ui Components
 
-Form inputs: Button, Input, Label, Textarea, Select, Checkbox, Radio Group, Switch, Form
-Layout: Card, Avatar, Badge, Table, Tabs
-Modals: Dialog, Sheet, Alert Dialog, Popover, Dropdown Menu
-Feedback: Toast (with use-toast hook)
+- **Form inputs**: button, input, label, textarea, select, checkbox, radio-group, switch, form
+- **Layout**: card, avatar, badge, table, tabs
+- **Overlays**: dialog, sheet, alert-dialog, popover, dropdown-menu
+- **Feedback**: toast (with use-toast hook), toaster
 
-## Important Notes
+## Testing Setup
 
-- Components are Server Components by default - only add `"use client"` when necessary
-- Always check existing code patterns before implementing new features
-- Use existing utilities and components from shadcn/ui
-- Follow the established Prettier and ESLint configurations
+- **Jest** with React Testing Library
+- Configuration in `jest.config.js`
+- Test files in `/tests` directory
+- Setup file: `/tests/setup.ts`

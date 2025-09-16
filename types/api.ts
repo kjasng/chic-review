@@ -26,19 +26,32 @@ export interface UserResponse {
   id: string
   email: string
   name: string | null
-  role: string
+  role: "USER" | "ADMIN"
   image?: string | null
   createdAt?: Date
   _count?: {
-    posts: number
+    reviews: number
   }
 }
 
 export interface PostResponse {
   id: string
-  title: string
+  name: string
   content: string | null
-  published: boolean
+  description: string | null
+  type: "HOMESTAY" | "HOSTEL" | "HOTEL" | "APARTMENT"
+  slug: string
+  district: string
+  priceDaily: number
+  priceMonthly: number
+  amenities: string[]
+  images: string[]
+  capacity: number
+  rooms: number
+  bathrooms: number
+  featured: boolean
+  rating: number
+  reviewCount: number
   authorId: string
   author?: UserResponse
   createdAt: Date

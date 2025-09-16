@@ -42,6 +42,7 @@ export const authConfig: NextAuthConfig = {
             email: user.email,
             name: user.name,
             role: user.role,
+            points: user.points,
           }
         }
 
@@ -76,6 +77,7 @@ export const authConfig: NextAuthConfig = {
           ...token,
           id: user.id,
           role: user.role,
+          points: user.points,
         }
       }
       return token
@@ -83,7 +85,8 @@ export const authConfig: NextAuthConfig = {
     session({ session, token }) {
       if (token) {
         session.user.id = token.id as string
-        session.user.role = token.role as string
+        session.user.role = token.role as "USER" | "ADMIN"
+        session.user.points = token.points as number
       }
       return session
     },

@@ -8,18 +8,31 @@ datasource db {
 }
 
 model User {
-  id            String    @id @default(auto()) @map("_id") @db.ObjectId
-  email         String    @unique
-  emailVerified DateTime?
-  name          String?
-  password      String?
-  image         String?
-  role          Role      @default(USER)
-  createdAt     DateTime  @default(now())
-  updatedAt     DateTime  @updatedAt
-  accounts      Account[]
-  sessions      Session[]
-  posts         Post[]
+  id              String    @id @default(auto()) @map("_id") @db.ObjectId
+  email           String    @unique
+  emailVerified   DateTime?
+  name            String?
+  password        String?
+  image           String?
+  avatar          String?
+  bio             String?
+  role            Role      @default(USER)
+  points          Int       @default(0)
+  totalReviews    Int       @default(0)
+  hasVerifiedStay Boolean   @default(false)
+  language        String    @default("vi")
+  notifications   Boolean   @default(true)
+  newsletter      Boolean   @default(false)
+  createdAt       DateTime  @default(now())
+  updatedAt       DateTime  @updatedAt
+
+  // Relations
+  accounts        Account[]
+  sessions        Session[]
+  reviews         Review[]
+  pointHistory    Point[]
+  redemptions     Redemption[]
+  savedProperties String[]  @db.ObjectId
 }
 
 model Account {
@@ -57,19 +70,222 @@ model VerificationToken {
   @@unique([identifier, token])
 }
 
-model Post {
-  id        String   @id @default(auto()) @map("_id") @db.ObjectId
-  title     String
-  content   String?
-  published Boolean  @default(false)
-  authorId  String   @db.ObjectId
-  author    User     @relation(fields: [authorId], references: [id], onDelete: Cascade)
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+model Accommodation {
+  id          String   @id @default(auto()) @map("_id") @db.ObjectId
+  name        String
+  type        AccommodationType
+  slug        String   @unique
+  description String
+  street      String
+  district    String
+  city        String   @default("Hanoi")
+  lat         Float?
+  lng         Float?
+  priceDaily  Int
+  priceMonthly Int?
+  currency    String   @default("VND")
+  amenities   String[]
+  images      String[]
+  rules       String[]
+  capacity    Int
+  rooms       Int
+  bathrooms   Int
+  featured    Boolean  @default(false)
+  status      AccommodationStatus @default(ACTIVE)
+  rating      Float    @default(0)
+  reviewCount Int      @default(0)
+  viewCount   Int      @default(0)
+  managedBy   String?  @db.ObjectId
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  // Relations
+  reviews     Review[]
+  crawlJobs   CrawlJob[]
 }
 
+model Review {
+  id                String    @id @default(auto()) @map("_id") @db.ObjectId
+  accommodationId   String    @db.ObjectId
+  source           ReviewSource
+  sourceReviewId   String?
+  sourceUrl        String?
+  userId           String?   @db.ObjectId
+  reviewerName     String
+  reviewerAvatar   String?
+  overallRating    Float
+  cleanliness      Float?
+  location         Float?
+  value            Float?
+  communication    Float?
+  amenities        Float?
+  title            String?
+  content          String
+  language         String    @default("vi")
+  translatedContent String?
+  images           String[]
+  reviewDate       DateTime
+  crawledAt        DateTime?
+  verified         Boolean   @default(false)
+  helpful          Int       @default(0)
+  sentiment        Sentiment @default(NEUTRAL)
+  status           ReviewStatus @default(ACTIVE)
+  likes            Int       @default(0)
+  replies          Int       @default(0)
+  responseFromOwner String?
+  createdAt        DateTime  @default(now())
+  updatedAt        DateTime  @updatedAt
+
+  // Relations
+  accommodation    Accommodation @relation(fields: [accommodationId], references: [id], onDelete: Cascade)
+  user             User?         @relation(fields: [userId], references: [id], onDelete: SetNull)
+}
+
+model Point {
+  id          String   @id @default(auto()) @map("_id") @db.ObjectId
+  userId      String   @db.ObjectId
+  action      String
+  points      Int
+  description String
+  referenceType PointReferenceType
+  referenceId String?  @db.ObjectId
+  balance     Int
+  createdAt   DateTime @default(now())
+
+  // Relations
+  user        User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+}
+
+model Reward {
+  id           String   @id @default(auto()) @map("_id") @db.ObjectId
+  name         String
+  description  String
+  category     RewardCategory
+  pointsCost   Int
+  image        String?
+  available    Boolean  @default(true)
+  stock        Int      @default(0)
+  deliveryType DeliveryType @default(DIGITAL)
+  redemptions  Int      @default(0)
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+
+  // Relations
+  redemptionList Redemption[]
+}
+
+model Redemption {
+  id           String   @id @default(auto()) @map("_id") @db.ObjectId
+  userId       String   @db.ObjectId
+  rewardId     String   @db.ObjectId
+  pointsSpent  Int
+  status       RedemptionStatus @default(PENDING)
+  deliveryInfo Json?
+  notes        String?
+  processedBy  String?  @db.ObjectId
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+
+  // Relations
+  user         User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  reward       Reward   @relation(fields: [rewardId], references: [id])
+}
+
+model CrawlJob {
+  id              String   @id @default(auto()) @map("_id") @db.ObjectId
+  platform        CrawlPlatform
+  accommodationId String   @db.ObjectId
+  url             String
+  status          CrawlStatus @default(PENDING)
+  lastCrawled     DateTime?
+  nextScheduled   DateTime?
+  reviewsFound    Int      @default(0)
+  reviewsNew      Int      @default(0)
+  reviewsUpdated  Int      @default(0)
+  errorLog        String[]
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
+
+  // Relations
+  accommodation   Accommodation @relation(fields: [accommodationId], references: [id], onDelete: Cascade)
+}
+
+// Enums
 enum Role {
   USER
   ADMIN
-  MODERATOR
+}
+
+enum AccommodationType {
+  HOMESTAY
+  HOSTEL
+  HOTEL
+  APARTMENT
+}
+
+enum AccommodationStatus {
+  ACTIVE
+  INACTIVE
+  MAINTENANCE
+}
+
+enum ReviewSource {
+  FACEBOOK
+  GOOGLE
+  AGODA
+  BOOKING
+  PLATFORM
+}
+
+enum Sentiment {
+  POSITIVE
+  NEUTRAL
+  NEGATIVE
+}
+
+enum ReviewStatus {
+  ACTIVE
+  HIDDEN
+  FLAGGED
+}
+
+enum PointReferenceType {
+  REVIEW
+  PHOTO
+  VOTE
+  BONUS
+  REDEMPTION
+}
+
+enum RewardCategory {
+  COURSE
+  EBOOK
+  MATERIAL
+  MEMBERSHIP
+}
+
+enum DeliveryType {
+  DIGITAL
+  PHYSICAL
+}
+
+enum RedemptionStatus {
+  PENDING
+  APPROVED
+  DELIVERED
+  CANCELLED
+}
+
+enum CrawlPlatform {
+  FACEBOOK
+  GOOGLE
+  AGODA
+  BOOKING
+}
+
+enum CrawlStatus {
+  PENDING
+  PROCESSING
+  COMPLETED
+  FAILED
 }
