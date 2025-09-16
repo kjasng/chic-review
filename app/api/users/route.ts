@@ -1,6 +1,7 @@
 import { NextResponse } from "next/server"
 import type { NextRequest } from "next/server"
 
+import type { Role } from "@prisma/client"
 import { z } from "zod"
 
 import { auth } from "@/lib/auth/auth"
@@ -43,7 +44,7 @@ export async function GET(req: NextRequest) {
           role: true,
           createdAt: true,
           _count: {
-            select: { posts: true },
+            select: { reviews: true },
           },
         },
         orderBy: { createdAt: "desc" },
@@ -92,7 +93,10 @@ export async function POST(req: NextRequest) {
     }
 
     const user = await prisma.user.create({
-      data: validatedData,
+      data: {
+        ...validatedData,
+        role: validatedData.role as Role,
+      },
       select: {
         id: true,
         email: true,

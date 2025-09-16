@@ -1,3 +1,5 @@
+"use client"
+
 import { AccommodationCard } from "@/components/accommodations/AccommodationCard"
 import { AccommodationSearch } from "@/components/search/AccommodationSearch"
 

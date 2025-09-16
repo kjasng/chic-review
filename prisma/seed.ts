@@ -5,7 +5,7 @@ const prisma = new PrismaClient()
 
 async function main() {
   // Clear existing data
-  await prisma.post.deleteMany()
+  await prisma.review.deleteMany()
   await prisma.account.deleteMany()
   await prisma.session.deleteMany()
   await prisma.user.deleteMany()
@@ -13,7 +13,7 @@ async function main() {
   // Create admin user
   const hashedPassword = await hash("Admin@123", 12)
 
-  const adminUser = await prisma.user.create({
+  await prisma.user.create({
     data: {
       email: "admin@example.com",
       name: "Admin User",
@@ -24,7 +24,7 @@ async function main() {
   })
 
   // Create regular user
-  const testUser = await prisma.user.create({
+  await prisma.user.create({
     data: {
       email: "user@example.com",
       name: "Test User",
@@ -34,53 +34,62 @@ async function main() {
     },
   })
 
-  // Create moderator user
-  const moderatorUser = await prisma.user.create({
-    data: {
-      email: "moderator@example.com",
-      name: "Moderator User",
-      password: hashedPassword,
-      role: "MODERATOR",
-      emailVerified: new Date(),
-    },
-  })
-
   // Create sample posts
-  await prisma.post.createMany({
+  await prisma.review.createMany({
     data: [
       {
         title: "Getting Started with Next.js 15",
         content:
           "Next.js 15 introduces exciting new features including improved performance, better developer experience, and enhanced React Server Components support.",
-        published: true,
-        authorId: adminUser.id,
+        status: "ACTIVE",
+        accommodationId: "1",
+        source: "PLATFORM",
+        reviewerName: "Test User",
+        overallRating: 5,
+        reviewDate: new Date(),
       },
       {
         title: "Understanding Prisma ORM",
         content:
           "Prisma is a next-generation ORM that makes database access easy with type-safe queries and migrations.",
-        published: true,
-        authorId: adminUser.id,
+        status: "ACTIVE",
+        accommodationId: "1",
+        source: "PLATFORM",
+        reviewerName: "Test User",
+        overallRating: 5,
+        reviewDate: new Date(),
       },
       {
         title: "Authentication with NextAuth.js",
         content:
           "NextAuth.js provides a complete authentication solution for Next.js applications with support for multiple providers.",
-        published: true,
-        authorId: testUser.id,
+        status: "ACTIVE",
+        accommodationId: "1",
+        source: "PLATFORM",
+        reviewerName: "Test User",
+        overallRating: 5,
+        reviewDate: new Date(),
       },
       {
         title: "Draft Post - Work in Progress",
         content: "This is a draft post that is not yet published.",
-        published: false,
-        authorId: testUser.id,
+        status: "ACTIVE",
+        accommodationId: "1",
+        source: "PLATFORM",
+        reviewerName: "Test User",
+        overallRating: 5,
+        reviewDate: new Date(),
       },
       {
         title: "TypeScript Best Practices",
         content:
           "Learn about TypeScript best practices for building scalable and maintainable applications.",
-        published: true,
-        authorId: moderatorUser.id,
+        status: "ACTIVE",
+        accommodationId: "1",
+        source: "PLATFORM",
+        reviewerName: "Test User",
+        overallRating: 5,
+        reviewDate: new Date(),
       },
     ],
   })

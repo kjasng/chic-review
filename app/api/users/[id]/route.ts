@@ -1,6 +1,7 @@
 import { NextResponse } from "next/server"
 import type { NextRequest } from "next/server"
 
+import type { Role } from "@prisma/client"
 import { z } from "zod"
 
 import { auth } from "@/lib/auth/auth"
@@ -34,7 +35,7 @@ export async function GET(
         emailVerified: true,
         createdAt: true,
         _count: {
-          select: { posts: true },
+          select: { reviews: true },
         },
       },
     })
@@ -93,7 +94,10 @@ export async function PATCH(
 
     const user = await prisma.user.update({
       where: { id },
-      data: validatedData,
+      data: {
+        ...validatedData,
+        role: validatedData.role as Role,
+      },
       select: {
         id: true,
         email: true,
